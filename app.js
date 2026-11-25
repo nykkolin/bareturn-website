@@ -24,6 +24,8 @@
     'nav.pricing': 'Pricing',
     'nav.faq': 'FAQ',
     'nav.demo': 'Console demo',
+    'nav.login': 'Sign in',
+    'nav.account': 'My Account',
     'nav.cta': 'Free trial',
     'hero.title': 'Whole-machine backup and bare-metal recovery, running in your own data center.',
     'hero.lead': 'BareTurn protects Windows and Linux servers and workstations with whole-machine backup, bare-metal recovery, instant volume recovery, and ransomware-resistant offline copies. Every component runs on-premises, including in air-gapped networks. Perpetual licenses, paid once.',
@@ -399,10 +401,15 @@
       `正在为 ${serverSeats} 台服务器和 ${workstationSeats} 台工作站创建订单…`,
       `Creating an order for ${serverSeats} server(s) and ${workstationSeats} workstation(s)…`);
     try {
+      const headers = { 'Content-Type': 'application/json' };
+      const token = window.BTPortal?.getToken();
+      if (token) headers.Authorization = 'Bearer ' + token;
+      const payload = { serverSeats, workstationSeats };
+      if (token) payload.successUrl = location.origin + '/account.html?paid=1';
       const res = await fetch(`${PORTAL_URL}/api/v1/checkout`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'purchase', serverSeats, workstationSeats })
+        headers,
+        body: JSON.stringify(payload)
       });
       const data = await res.json();
       if (!res.ok || !data.checkoutUrl) throw new Error(data.error || 'Checkout creation failed');
@@ -417,4 +424,15 @@
   });
 
   applyLang(lang);
+
+  // Reflect logged-in state in top navbar
+  (async function syncNavAuth() {
+    const authBtn = document.getElementById('nav-auth-btn');
+    if (!authBtn || !window.BTPortal || !window.BTPortal.getToken()) return;
+    const u = await window.BTPortal.refreshUser();
+    if (!u) return;
+    authBtn.href = u.role === 'admin' ? 'admin.html' : 'account.html';
+    authBtn.removeAttribute('data-i18n');
+    authBtn.textContent = u.role === 'admin' ? `${u.name}（管理后台）` : `${u.name}（我的账户）`;
+  })();
 })();

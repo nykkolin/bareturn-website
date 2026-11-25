@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>管理后台 · 用户、订单与许可管理 · BareTurn</title>
+  <link rel="icon" type="image/svg+xml" href="assets/bareturn-mark.svg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="portal.css">
+</head>
+<body>
+  <header class="nav-wrap">
+    <div class="container nav">
+      <a class="brand" href="index.html">
+        <img src="assets/bareturn-mark.svg" alt="" width="30" height="30">
+        <strong>BareTurn</strong><span class="by">Admin Console</span>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">官网首页</a>
+        <a href="account.html">我的账户</a>
+        <a href="admin.html" style="color:var(--brand);font-weight:600">管理后台</a>
+      </nav>
+      <div class="nav-actions">
+        <span id="admin-user-label" class="muted hide-sm" style="font-size:13px"></span>
+        <button class="icon-btn" id="theme-toggle" type="button" aria-label="切换主题">◐</button>
+        <button class="btn sm ghost" id="btn-logout" type="button">退出登录</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="portal-main">
+    <div class="container" id="admin-root">
+      <div class="page-top">
+        <div>
+          <h1>BareTurn 运营管理后台</h1>
+          <p>管理注册用户、查看订单流水、手动签发/调整/解绑/吊销永久许可并追溯审计日志。</p>
+        </div>
+        <div class="top-actions">
+          <button class="btn sm" id="btn-refresh" type="button">刷新数据</button>
+          <button class="btn sm primary" id="btn-grant" type="button">+ 手动签发许可</button>
+        </div>
+      </div>
+
+      <div class="kpi-grid">
+        <div class="kpi-card"><small>注册用户（活跃 / 管理员）</small><strong id="ak-users">—</strong><span class="sub" id="ak-users-sub">—</span></div>
+        <div class="kpi-card"><small>累计 Creem 实收（USD）</small><strong id="ak-rev">—</strong><span class="sub" id="ak-ord-sub">—</span></div>
+        <div class="kpi-card"><small>有效永久许可（已绑定 Core）</small><strong id="ak-lic">—</strong><span class="sub" id="ak-lic-sub">—</span></div>
+        <div class="kpi-card"><small>有效总席位</small><strong id="ak-seats">—</strong><span class="sub" id="ak-seats-sub">—</span></div>
+      </div>
+
+      <div class="portal-tabs" role="tablist">
+        <button type="button" class="on" data-tab="users">用户管理</button>
+        <button type="button" data-tab="licenses">许可管理</button>
+        <button type="button" data-tab="orders">订单流水</button>
+        <button type="button" data-tab="audit">管理员审计</button>
+      </div>
+
+      <!-- Users Tab -->
+      <section id="tab-users" class="panel">
+        <div class="toolbar">
+          <input type="search" id="u-q" placeholder="搜索邮箱、姓名或公司…">
+          <select id="u-role"><option value="">全部角色</option><option value="user">普通用户</option><option value="admin">管理员</option></select>
+          <select id="u-status"><option value="">全部状态</option><option value="active">正常</option><option value="disabled">已停用</option></select>
+        </div>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th>用户</th><th>角色</th><th>状态</th><th>订单 / 许可</th><th>有效席位</th><th>注册 / 最近登录</th><th style="text-align:right">操作</th></tr></thead>
+            <tbody id="u-tbody"><tr><td colspan="7" class="empty-box">正在加载…</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Licenses Tab -->
+      <section id="tab-licenses" class="panel hidden">
+        <div class="toolbar">
+          <input type="search" id="l-q" placeholder="搜索激活码、邮箱、客户名、CoreId 或订单号…">
+          <select id="l-status">
+            <option value="">全部状态</option><option value="Active">有效 (Active)</option>
+            <option value="Suspended">已暂停 (Suspended)</option><option value="Revoked">已撤销 (Revoked)</option><option value="Disputed">争议冻结</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th>激活码</th><th>归属客户 / 邮箱</th><th>席位（Server / WS）</th><th>状态</th><th>已绑定 CoreId</th><th>换机</th><th style="text-align:right">操作</th></tr></thead>
+            <tbody id="l-tbody"><tr><td colspan="7" class="empty-box">正在加载…</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Orders Tab -->
+      <section id="tab-orders" class="panel hidden">
+        <div class="toolbar">
+          <input type="search" id="o-q" placeholder="搜索订单号、邮箱或激活码…">
+          <select id="o-status">
+            <option value="">全部状态</option><option value="Paid">已支付</option><option value="Manual">手动签发</option>
+            <option value="Pending">待支付</option><option value="Refunded">已退款</option><option value="Disputed">争议</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th>时间</th><th>订单号</th><th>客户邮箱</th><th>席位</th><th>金额</th><th>状态</th><th>激活码</th></tr></thead>
+            <tbody id="o-tbody"><tr><td colspan="7" class="empty-box">正在加载…</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Audit Tab -->
+      <section id="tab-audit" class="panel hidden">
+        <div class="table-wrap">
+          <table class="data">
+            <thead><tr><th>时间</th><th>管理员</th><th>动作</th><th>对象</th><th>详情</th></tr></thead>
+            <tbody id="a-tbody"><tr><td colspan="5" class="empty-box">正在加载…</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="portal-common.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

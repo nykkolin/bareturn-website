@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>登录与注册 · BareTurn</title>
+  <link rel="icon" type="image/svg+xml" href="assets/bareturn-mark.svg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="portal.css">
+</head>
+<body>
+  <header class="nav-wrap">
+    <div class="container nav">
+      <a class="brand" href="index.html">
+        <img src="assets/bareturn-mark.svg" alt="" width="30" height="30">
+        <strong>BareTurn</strong><span class="by">Rootford</span>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html">官网首页</a>
+        <a href="index.html#pricing">永久许可定价</a>
+        <a href="demo.html" target="_blank" rel="noopener">控制台演示</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn" id="theme-toggle" type="button" aria-label="切换主题">◐</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="auth-page">
+    <div class="auth-card">
+      <div style="margin-bottom:18px">
+        <h1 style="margin:0 0 4px;font-size:22px">BareTurn 账户中心</h1>
+        <p class="muted" style="margin:0;font-size:13.5px">管理您的永久许可、订单记录、离线签发与换机迁移。</p>
+      </div>
+
+      <div class="auth-tabs" role="tablist">
+        <button type="button" class="on" data-mode="login">登录</button>
+        <button type="button" data-mode="register">注册新账户</button>
+      </div>
+
+      <form id="login-form">
+        <div class="field"><label for="l-email">邮箱</label><input id="l-email" name="email" type="email" autocomplete="email" required placeholder="you@company.com"></div>
+        <div class="field"><label for="l-pw">密码</label><input id="l-pw" name="password" type="password" autocomplete="current-password" required placeholder="输入密码"></div>
+        <button type="submit" class="btn primary full lg" id="l-btn">登录</button>
+        <div class="form-err" id="l-err"></div>
+      </form>
+
+      <form id="register-form" class="hidden">
+        <div class="field"><label for="r-name">姓名 / 联系人</label><input id="r-name" name="name" type="text" autocomplete="name" required placeholder="张明"></div>
+        <div class="field"><label for="r-company">公司 / 组织（可选）</label><input id="r-company" name="company" type="text" autocomplete="organization" placeholder="示例科技有限公司"></div>
+        <div class="field"><label for="r-email">邮箱</label><input id="r-email" name="email" type="email" autocomplete="email" required placeholder="it@company.com"></div>
+        <div class="field"><label for="r-pw">密码</label><input id="r-pw" name="password" type="password" autocomplete="new-password" minlength="8" required placeholder="至少 8 个字符"></div>
+        <div class="field"><label for="r-pw2">确认密码</label><input id="r-pw2" name="password2" type="password" autocomplete="new-password" minlength="8" required placeholder="再次输入密码"></div>
+        <button type="submit" class="btn primary full lg" id="r-btn">创建账户</button>
+        <div class="form-err" id="r-err"></div>
+      </form>
+    </div>
+  </main>
+
+  <script src="portal-common.js"></script>
+  <script>
+    (async function () {
+      const P = window.BTPortal;
+      P.initTheme();
+      const qp = new URLSearchParams(location.search);
+      const next = qp.get('next') || '';
+
+      const existing = await P.refreshUser();
+      if (existing) {
+        location.href = next || (existing.role === 'admin' ? 'admin.html' : 'account.html');
+        return;
+      }
+
+      const tabs = document.querySelectorAll('.auth-tabs button');
+      const loginForm = document.getElementById('login-form');
+      const regForm = document.getElementById('register-form');
+      function setMode(mode) {
+        tabs.forEach((b) => b.classList.toggle('on', b.dataset.mode === mode));
+        loginForm.classList.toggle('hidden', mode !== 'login');
+        regForm.classList.toggle('hidden', mode !== 'register');
+      }
+      tabs.forEach((b) => b.addEventListener('click', () => setMode(b.dataset.mode)));
+      if (qp.get('mode') === 'register') setMode('register');
+
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const errEl = document.getElementById('l-err');
+        const btn = document.getElementById('l-btn');
+        errEl.textContent = '';
+        btn.disabled = true;
+        try {
+          const data = await P.api('/api/v1/auth/login', {
+            method: 'POST',
+            skipClearOn401: true,
+            body: JSON.stringify({
+              email: loginForm.email.value.trim(),
+              password: loginForm.password.value
+            })
+          });
+          P.setSession(data.token, data.user);
+          location.href = next || (data.user.role === 'admin' ? 'admin.html' : 'account.html');
+        } catch (err) {
+          errEl.textContent = err.message;
+          btn.disabled = false;
+        }
+      });
+
+      regForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const errEl = document.getElementById('r-err');
+        const btn = document.getElementById('r-btn');
+        errEl.textContent = '';
+        if (regForm.password.value !== regForm.password2.value) {
+          errEl.textContent = '两次输入的密码不一致。';
+          return;
+        }
+        btn.disabled = true;
+        try {
+          const data = await P.api('/api/v1/auth/register', {
+            method: 'POST',
+            skipClearOn401: true,
+            body: JSON.stringify({
+              name: regForm.name.value.trim(),
+              company: regForm.company.value.trim(),
+              email: regForm.email.value.trim(),
+              password: regForm.password.value
+            })
+          });
+          P.setSession(data.token, data.user);
+          location.href = next || 'account.html';
+        } catch (err) {
+          errEl.textContent = err.message;
+          btn.disabled = false;
+        }
+      });
+    })();
+  </script>
+</body>
+</html>
