@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BareTurn — Windows 与 Linux 整机备份、裸机恢复与防勒索灾备（永久许可）</title>
+  <meta name="description" content="BareTurn 3.1 是一款面向企业与运维团队的私有化整机备份与裸机恢复系统。支持 Windows / Linux 整机与分区备份、秒级即时恢复、可引导离线盘与 S3 不可变副本。纯永久买断许可，无订阅、100% 离线可用、恢复权永不设限。">
+  <meta property="og:title" content="BareTurn — 永久许可的 Windows 与 Linux 整机备份与裸机恢复">
+  <meta property="og:description" content="一次买断，永久运行。支持异机裸机恢复、秒级即时恢复、离线盘防勒索与 S3 Object Lock。免费 30 天全功能试用（5 工作站 + 1 服务器）。">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/svg+xml" href="assets/bareturn-mark.svg">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="nav-wrap">
+    <div class="container nav">
+      <a class="brand" href="#top" aria-label="BareTurn Home">
+        <img src="assets/bareturn-mark.svg" alt="BareTurn" width="34" height="34">
+        <span><strong>BareTurn</strong><small data-i18n="brand.sub">by Rootford</small></span>
+      </a>
+      <nav class="nav-links" id="nav-links">
+        <a href="#features" data-i18n="nav.features">核心能力</a>
+        <a href="#architecture" data-i18n="nav.arch">灾备架构</a>
+        <a href="#compatibility" data-i18n="nav.compat">平台支持</a>
+        <a href="#pricing" data-i18n="nav.pricing">永久许可定价</a>
+        <a href="#faq" data-i18n="nav.faq">常见问题</a>
+        <a href="demo.html" target="_blank" rel="noopener noreferrer" data-i18n="nav.demo">在线控制台演示</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn" id="lang-toggle" type="button" title="Switch language">EN</button>
+        <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle theme" title="切换明暗主题">◐</button>
+        <a class="btn sm ghost hide-sm" href="https://bareturn-licensing-portal.nykko-lin.workers.dev/" target="_blank" rel="noopener noreferrer" data-i18n="nav.portal">许可门户</a>
+        <a class="btn sm primary" href="#pricing" data-i18n="nav.cta">免费试用 / 买断</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-glow" aria-hidden="true"></div>
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <div class="eyebrow">
+            <span class="dot"></span>
+            <span data-i18n="hero.badge">BareTurn 3.1 · 永久许可 · 零订阅 · 100% 内网离线可用</span>
+          </div>
+          <h1 data-i18n="hero.title">整机备份与裸机恢复，<br><span class="accent">一次买断，永久掌控。</span></h1>
+          <p class="lead" data-i18n="hero.lead">
+            专为 Windows 与 Linux 物理机及服务器打造的私有化灾备系统。集成 Web 管理控制台、无驱动增量去重、异机裸机恢复（URC）、秒级即时恢复、可引导防勒索离线盘与 S3 不可变副本。绝不强迫订阅，维护到期绝不停服。
+          </p>
+          <div class="hero-cta">
+            <a class="btn lg primary" href="#download" data-i18n="hero.btnTrial">开启 30 天全功能试用</a>
+            <a class="btn lg" href="demo.html" target="_blank" rel="noopener noreferrer" data-i18n="hero.btnDemo">在线体验真实控制台 ↗</a>
+          </div>
+          <div class="hero-proof">
+            <div><strong data-i18n="proof.1.k">0 订阅费</strong><span data-i18n="proof.1.v">永久许可，按席位透明买断</span></div>
+            <div><strong data-i18n="proof.2.k">5 WS + 1 Server</strong><span data-i18n="proof.2.v">开箱即用 30 天免注册试用</span></div>
+            <div><strong data-i18n="proof.3.k">恢复永不阻断</strong><span data-i18n="proof.3.v">任何状态下历史数据 100% 可取回</span></div>
+          </div>
+        </div>
+
+        <!-- Interactive Console Preview Card -->
+        <div class="console-frame" aria-label="BareTurn Core Console Preview">
+          <div class="console-chrome">
+            <span class="lights"><i></i><i></i><i></i></span>
+            <span class="chrome-url">https://core.corp.local:9843/#/dashboard</span>
+            <span class="chrome-pill" data-i18n="mock.badge">私有部署 · 内网运行</span>
+          </div>
+          <div class="console-body">
+            <div class="console-sidebar">
+              <div class="cs-brand"><img src="assets/bareturn-mark.svg" alt="" width="20" height="20"><b>BareTurn</b></div>
+              <div class="cs-item on" data-i18n="mock.nav1">概览</div>
+              <div class="cs-item" data-i18n="mock.nav2">受保护计算机</div>
+              <div class="cs-item" data-i18n="mock.nav3">恢复点与挂载</div>
+              <div class="cs-item" data-i18n="mock.nav4">分区即时恢复</div>
+              <div class="cs-item" data-i18n="mock.nav5">存储库与离线盘</div>
+              <div class="cs-item" data-i18n="mock.nav6">设置 · 永久许可</div>
+            </div>
+            <div class="console-main">
+              <div class="kpi-row">
+                <div class="kpi">
+                  <small data-i18n="mock.k1">受保护计算机</small>
+                  <strong>12 / 12</strong>
+                  <span class="ok-txt" data-i18n="mock.k1s">100% 达标</span>
+                </div>
+                <div class="kpi">
+                  <small data-i18n="mock.k2">存储去重压缩比</small>
+                  <strong>3.8×</strong>
+                  <span class="muted" data-i18n="mock.k2s">Zstd + SHA-256</span>
+                </div>
+                <div class="kpi">
+                  <small data-i18n="mock.k3">离线 / S3 不可变</small>
+                  <strong>3-2-1-1-0</strong>
+                  <span class="ok-txt" data-i18n="mock.k3s">Object Lock 已锁定</span>
+                </div>
+              </div>
+              <div class="mock-list">
+                <div class="mock-row">
+                  <span class="pill ok">OK</span>
+                  <div class="mr-info"><b>ERP-DB01</b><small>Windows Server 2022 · 整机 VSS 应用一致 · 12 分钟前</small></div>
+                  <span class="mr-stat">增量 148 MB</span>
+                </div>
+                <div class="mock-row">
+                  <span class="pill ok">OK</span>
+                  <div class="mr-info"><b>GIT-PROD-02</b><small>Ubuntu 24.04 · ext4 + LVM 快照 · 38 分钟前</small></div>
+                  <span class="mr-stat">增量 62 MB</span>
+                </div>
+                <div class="mock-row">
+                  <span class="pill teal">LIVE</span>
+                  <div class="mr-info"><b>FIN-FILE01 (D:)</b><small>即时恢复在线可读写 · 后台回写 84% · 280 MB/s</small></div>
+                  <span class="mr-stat">RTO 6 秒</span>
+                </div>
+                <div class="mock-row">
+                  <span class="pill ok">AIRGAP</span>
+                  <div class="mr-info"><b>USB-VAULT-A</b><small>可引导离线盘 · AES-256-GCM · 已自动安全弹出</small></div>
+                  <span class="mr-stat">独立完整</span>
+                </div>
+              </div>
+              <div class="console-foot">
+                <span data-i18n="mock.foot">永久许可 · 离线签名有效 · 不依赖任何外网</span>
+                <a href="demo.html" target="_blank" rel="noopener noreferrer" data-i18n="mock.open">打开完整交互演示 →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Principles Strip -->
+    <section class="strip">
+      <div class="container strip-grid">
+        <div class="strip-item">
+          <div class="strip-num">01</div>
+          <div>
+            <h3 data-i18n="strip.1.t">纯永久许可，拒绝订阅绑架</h3>
+            <p data-i18n="strip.1.d">一次性买断席位永久运行当前版本。附带 1 年更新与支持，维护期到期后系统照常备份与恢复，绝不强制续费停机。</p>
+          </div>
+        </div>
+        <div class="strip-item">
+          <div class="strip-num">02</div>
+          <div>
+            <h3 data-i18n="strip.2.t">完全离线优先，适合隔离内网</h3>
+            <p data-i18n="strip.2.d">本地 Web 控制台、本地 TOTP 双因素认证、离线 ECDSA P-256 签名许可文件，无需连接厂商云端即可终身稳定运行。</p>
+          </div>
+        </div>
+        <div class="strip-item">
+          <div class="strip-num">03</div>
+          <div>
+            <h3 data-i18n="strip.3.t">不按容量收费，归档即释放席位</h3>
+            <p data-i18n="strip.3.d">存储库数量、备份 TB 容量、离线盘与管理员账号均不额外计费；停保归档计算机立即释放席位，历史恢复点永久可查可恢复。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Core Features -->
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker" data-i18n="feat.kicker">CORE CAPABILITIES</span>
+          <h2 data-i18n="feat.title">为真实故障与勒索攻击而造的工程级灾备</h2>
+          <p data-i18n="feat.sub">参考 Quest Rapid Recovery、Acronis 与 Macrium Reflect 多年企业实践，将复杂灾备流程精炼为单一可靠的私有化平台。</p>
+        </div>
+
+        <div class="cards-grid">
+          <article class="card">
+            <div class="card-ico">⚡</div>
+            <h3 data-i18n="feat.1.t">Windows 与 Linux 整机裸机恢复</h3>
+            <p data-i18n="feat.1.d">内置恢复介质构建器，一键生成 WinPE / Linux URC 启动 ISO。按原始偏移、分区 GUID 与引导代码精确重建 GPT/UEFI 与 MBR/BIOS，支持异机驱动注入与通用存储控制器启用。</p>
+          </article>
+          <article class="card">
+            <div class="card-ico">🚀</div>
+            <h3 data-i18n="feat.2.t">秒级分区即时恢复（Live Recovery）</h3>
+            <p data-i18n="feat.2.d">TB 级数据卷无需等待数小时写盘：Windows 通过本机回环 iSCSI、Linux 通过内核 dm-clone 数秒内上线可读写，按需拉取热数据、后台限速回写，重启后自动续传并无缝切换。</p>
+          </article>
+          <article class="card">
+            <div class="card-ico">🛡️</div>
+            <h3 data-i18n="feat.3.t">防勒索离线盘与 S3 不可变副本</h3>
+            <p data-i18n="feat.3.d">支持可引导 USB 离线盘自动同步并硬件安全弹出，断网离线保存；支持 S3 兼容对象存储异地副本与 Object Lock（Compliance / Governance），即便 Core 遭攻陷仍保底可恢复。</p>
+          </article>
+          <article class="card">
+            <div class="card-ico">📦</div>
+            <h3 data-i18n="feat.4.t">无驱动增量与源端全局去重</h3>
+            <p data-i18n="feat.4.d">不安装内核过滤驱动降低蓝屏风险：NTFS 采用 USN + $MFT 双重变化跟踪与抽样校验，Linux 跳过空闲块与 LVM 未分配区段；1 MiB Zstandard 压缩、SHA-256 源端去重与多连接并行传输。</p>
+          </article>
+          <article class="card">
+            <div class="card-ico">🔍</div>
+            <h3 data-i18n="feat.5.t">精细挂载、文件恢复与 WebDAV 映射</h3>
+            <p data-i18n="feat.5.d">控制台只读挂载任意历史恢复点，按目录浏览下载单个文件或 ZIP，直接写回原计算机或其他受保护机器，或通过 WebDAV 一键映射为本地驱动器盘符。</p>
+          </article>
+          <article class="card">
+            <div class="card-ico">🔐</div>
+            <h3 data-i18n="feat.6.t">零密码落盘与企业级运维治理</h3>
+            <p data-i18n="feat.6.d">Core 与 Agent 一次性管理员配对后采用证书指纹固定 + Bearer 令牌通信，绝不保存系统密码。内置 RBAC 三级角色、离线 TOTP 双因素认证、企微/钉钉/飞书/Syslog 告警与加密配置灾备。</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Architecture Switcher -->
+    <section class="section alt" id="architecture">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker" data-i18n="arch.kicker">ARCHITECTURE</span>
+          <h2 data-i18n="arch.title">简洁清晰的三层私有化架构</h2>
+          <p data-i18n="arch.sub">Core 主动拉取，Agent 不接触存储库凭据，彻底隔离攻击面。</p>
+        </div>
+
+        <div class="arch-tabs" role="tablist">
+          <button class="arch-tab on" type="button" data-arch="pull" data-i18n="arch.tab1">Core 主动拉取备份</button>
+          <button class="arch-tab" type="button" data-arch="ransomware" data-i18n="arch.tab2">3-2-1-1-0 防勒索链路</button>
+          <button class="arch-tab" type="button" data-arch="bmr" data-i18n="arch.tab3">零依赖裸机恢复</button>
+        </div>
+
+        <div class="arch-stage">
+          <div class="arch-diagram" id="arch-diagram"></div>
+          <div class="arch-notes" id="arch-notes"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Compatibility Matrix -->
+    <section class="section" id="compatibility">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker" data-i18n="compat.kicker">COMPATIBILITY</span>
+          <h2 data-i18n="compat.title">广泛覆盖主流操作系统、文件系统与存储形态</h2>
+        </div>
+        <div class="compat-grid">
+          <div class="compat-card">
+            <h3 data-i18n="compat.c1.t">受保护端（Agent）</h3>
+            <ul>
+              <li>Windows 10 / 11（Workstation 席位）</li>
+              <li>Windows Server 2012 / 2012 R2 / 2016 / 2019 / 2022 / 2025</li>
+              <li>Linux x86-64 &amp; ARM64（Ubuntu、Debian、RHEL、Rocky、AlmaLinux）</li>
+              <li data-i18n="compat.c1.l4">支持整机、仅系统盘、指定分区与 Windows 文件级备份</li>
+            </ul>
+          </div>
+          <div class="compat-card">
+            <h3 data-i18n="compat.c2.t">文件系统与分区表</h3>
+            <ul>
+              <li>NTFS（USN + MFT 变化跟踪）、ReFS、FAT12/16/32、exFAT</li>
+              <li>Linux ext2/3/4、XFS v4/v5、vfat、swap 与 LVM 快照</li>
+              <li>GPT / UEFI 与 MBR / BIOS（含扩展分区、MSR、BitLocker）</li>
+              <li data-i18n="compat.c2.l4">自动清零 pagefile / hiberfil / swapfile 减少传输与占用</li>
+            </ul>
+          </div>
+          <div class="compat-card">
+            <h3 data-i18n="compat.c3.t">存储库与异地灾备</h3>
+            <ul>
+              <li data-i18n="compat.c3.l1">Core 本地固定 NTFS / ReFS 磁盘（1 GiB 分段块存储）</li>
+              <li data-i18n="compat.c3.l2">NAS / 文件服务器 SMB 2/3 网络共享（自动断线重连）</li>
+              <li data-i18n="compat.c3.l3">可引导 USB 离线盘（自动备份、验证与硬件弹出）</li>
+              <li data-i18n="compat.c3.l4">S3 兼容对象存储异地副本 + Object Lock 不可变锁定</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing & Interactive Calculator -->
+    <section class="section alt" id="pricing">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker" data-i18n="price.kicker">PERPETUAL LICENSING</span>
+          <h2 data-i18n="price.title">透明永久许可，告别永无止境的订阅账单</h2>
+          <p data-i18n="price.sub">一次买断永久运行当前版本，默认含 1 年版本更新与技术支持。维护期满可继续永久使用，或按原价 20% 自由续购 1 年更新与支持。全部功能全量包含，不设容量税。</p>
+        </div>
+
+        <div class="pricing-grid">
+          <!-- Free Trial -->
+          <div class="price-card">
+            <div class="pc-head">
+              <span class="pc-tag" data-i18n="price.t0.tag">评估试用</span>
+              <h3 data-i18n="price.t0.name">30 天全功能试用</h3>
+              <div class="pc-price"><strong>$0</strong><span data-i18n="price.t0.unit">/ 30 天</span></div>
+              <p class="pc-desc" data-i18n="price.t0.desc">安装即自动开启，无需注册或信用卡，隔离内网直接完成真实 PoC 验证。</p>
+            </div>
+            <ul class="pc-list">
+              <li data-i18n="price.t0.f1">含 5 工作站 + 1 服务器席位上限</li>
+              <li data-i18n="price.t0.f2">开放全部核心与防勒索功能（无阉割）</li>
+              <li data-i18n="price.t0.f3">试用期满后所有已有恢复点仍永久可恢复</li>
+              <li data-i18n="price.t0.f4">支持企业离线签名延期与无缝一键转正</li>
+            </ul>
+            <a class="btn full" href="#download" data-i18n="price.t0.btn">下载安装试用版</a>
+          </div>
+
+          <!-- Workstation -->
+          <div class="price-card">
+            <div class="pc-head">
+              <span class="pc-tag" data-i18n="price.t1.tag">桌面终端</span>
+              <h3 data-i18n="price.t1.name">Workstation 永久席位</h3>
+              <div class="pc-price"><strong>$49</strong><span data-i18n="price.t1.unit">/ 台 · 一次性买断</span></div>
+              <p class="pc-desc" data-i18n="price.t1.desc">适用于 Windows 10 / 11 桌面办公机、财务工作站与工业控制 PC。</p>
+            </div>
+            <ul class="pc-list">
+              <li data-i18n="price.t1.f1">永久运行当前版本，绝不停服</li>
+              <li data-i18n="price.t1.f2">含首年免费版本更新与技术支持（SMA）</li>
+              <li data-i18n="price.t1.f3">后续维护续期可选：$9.80 / 年（20%）</li>
+              <li data-i18n="price.t1.f4">不限存储容量，支持在线/离线 `.bareturnlic` 激活</li>
+            </ul>
+            <div class="buy-inline">
+              <label class="qty-wrap"><span data-i18n="price.qty">数量</span><input type="number" id="qty-ws" min="1" max="500" value="5"></label>
+              <button class="btn primary" type="button" data-buy="BT_WS_PERP_1Y" data-qty-input="qty-ws" data-i18n="price.buyBtn">立即买断</button>
+            </div>
+          </div>
+
+          <!-- Server -->
+          <div class="price-card featured">
+            <div class="pc-ribbon" data-i18n="price.t2.ribbon">企业主力推荐</div>
+            <div class="pc-head">
+              <span class="pc-tag" data-i18n="price.t2.tag">物理 / 虚拟服务器</span>
+              <h3 data-i18n="price.t2.name">Server 永久席位</h3>
+              <div class="pc-price"><strong>$299</strong><span data-i18n="price.t2.unit">/ 台 · 一次性买断</span></div>
+              <p class="pc-desc" data-i18n="price.t2.desc">适用于 Windows Server 与 Linux 服务器，且可向下兼容保护工作站。</p>
+            </div>
+            <ul class="pc-list">
+              <li data-i18n="price.t2.f1">永久运行当前版本，维护到期绝不停服</li>
+              <li data-i18n="price.t2.f2">1 个服务器席位可向下兼容保护 1 台工作站</li>
+              <li data-i18n="price.t2.f3">含首年更新与支持；可选续期 $59.80 / 年（20%）</li>
+              <li data-i18n="price.t2.f4">含 30 天 Core 硬件灾备迁移宽限与自助换绑</li>
+            </ul>
+            <div class="buy-inline">
+              <label class="qty-wrap"><span data-i18n="price.qty">数量</span><input type="number" id="qty-srv" min="1" max="500" value="1"></label>
+              <button class="btn primary" type="button" data-buy="BT_SRV_PERP_1Y" data-qty-input="qty-srv" data-i18n="price.buyBtn">立即买断</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calculator & Maintenance Bar -->
+        <div class="calc-panel">
+          <div class="calc-left">
+            <h3 data-i18n="calc.title">永久许可成本测算器</h3>
+            <p class="muted" data-i18n="calc.sub">拖动滑块估算贵司一次买断总价，以及第 2 年起完全可选的维护更新成本（20%）。</p>
+            <div class="sliders">
+              <div class="slider-row">
+                <div class="sr-top"><label for="calc-srv" data-i18n="calc.srv">服务器（Server · $299）</label><strong id="calc-srv-val">2 台</strong></div>
+                <input id="calc-srv" type="range" min="0" max="50" value="2">
+              </div>
+              <div class="slider-row">
+                <div class="sr-top"><label for="calc-ws" data-i18n="calc.ws">工作站（Workstation · $49）</label><strong id="calc-ws-val">10 台</strong></div>
+                <input id="calc-ws" type="range" min="0" max="200" value="10">
+              </div>
+            </div>
+          </div>
+          <div class="calc-right">
+            <div class="calc-stat">
+              <small data-i18n="calc.total">一次性买断总额（含首年更新与支持）</small>
+              <strong id="calc-total">$1,088</strong>
+            </div>
+            <div class="calc-stat sub-stat">
+              <small data-i18n="calc.maint">第 2 年起可选维护续期（20%/年，不续仍永久运行）</small>
+              <strong id="calc-maint">$217.60 / 年</strong>
+            </div>
+            <div class="calc-actions">
+              <a class="btn sm" href="https://bareturn-licensing-portal.nykko-lin.workers.dev/" target="_blank" rel="noopener noreferrer" data-i18n="calc.portal">前往许可门户（含续购维护与离线兑换）↗</a>
+            </div>
+          </div>
+        </div>
+        <div id="checkout-status" class="checkout-status" role="status" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- Download & Quick Start -->
+    <section class="section" id="download">
+      <div class="container">
+        <div class="section-head">
+          <span class="kicker" data-i18n="dl.kicker">GET STARTED</span>
+          <h2 data-i18n="dl.title">5 分钟完成私有化部署与首台整机保护</h2>
+          <p data-i18n="dl.sub">安装 BareTurn Core 即可自动开启 30 天全功能评估试用（5 工作站 + 1 服务器），无需注册账号。</p>
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-idx">1</span>
+            <h3 data-i18n="dl.s1.t">安装 BareTurn Core</h3>
+            <p data-i18n="dl.s1.d">在独立 Windows Server / PC 运行 `BareTurn-core-3.1.0-win-x64-Setup.exe`，打开 `https://&lt;服务器&gt;:9843/` 创建管理员，自动启动 30 天试用。</p>
+          </div>
+          <div class="step-card">
+            <span class="step-idx">2</span>
+            <h3 data-i18n="dl.s2.t">部署 Agent 并配对</h3>
+            <p data-i18n="dl.s2.d">在 Windows 运行 Agent 安装包，或在 Linux 解压执行 `sudo ./install.sh`；在控制台核对证书指纹完成一次性配对。</p>
+          </div>
+          <div class="step-card">
+            <span class="step-idx">3</span>
+            <h3 data-i18n="dl.s3.t">生成恢复介质 &amp; 演练</h3>
+            <p data-i18n="dl.s3.d">在控制台一键生成 URC 启动 ISO 或可引导离线盘。转正时只需导入 `.bareturnlic` 或输入激活码，零重启无缝生效。</p>
+          </div>
+        </div>
+
+        <div class="dl-bar">
+          <div>
+            <strong data-i18n="dl.bar.t">准备体验 BareTurn 3.1？</strong>
+            <span data-i18n="dl.bar.d">您可以立即打开在线交互控制台演示，或前往许可门户获取激活码与离线证书。</span>
+          </div>
+          <div class="dl-bar-btns">
+            <a class="btn primary" href="demo.html" target="_blank" rel="noopener noreferrer" data-i18n="dl.bar.demo">打开在线控制台演示</a>
+            <a class="btn" href="https://bareturn-licensing-portal.nykko-lin.workers.dev/" target="_blank" rel="noopener noreferrer" data-i18n="dl.bar.portal">打开许可门户</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section alt" id="faq">
+      <div class="container faq-wrap">
+        <div class="section-head">
+          <span class="kicker">FAQ</span>
+          <h2 data-i18n="faq.title">许可与技术常见问题</h2>
+        </div>
+        <div class="faq-list">
+          <details open>
+            <summary data-i18n="faq.q1">维护期（SMA）到期后，软件会停止备份吗？</summary>
+            <p data-i18n="faq.a1">绝不会。BareTurn 采用纯永久许可：附带的 1 年维护期到期后，您已安装的版本可终身照常执行备份、恢复与维护。只有当您希望升级到维护期之后发布的新版本或获取官方技术支持时，才需按原价 20% 一次性订购维护续期。</p>
+          </details>
+          <details>
+            <summary data-i18n="faq.q2">试用期满或许可受限时，我已经备份的数据还能恢复吗？</summary>
+            <p data-i18n="faq.a2">100% 可以。恢复永不阻断是 BareTurn 的核心原则：无论试用是否到期，所有历史恢复点的 URC 裸机恢复、离线盘引导恢复、分区恢复、只读挂载浏览与文件下载均始终开放。</p>
+          </details>
+          <details>
+            <summary data-i18n="faq.q3">我们的机房完全断网（隔离内网），可以正常激活和使用吗？</summary>
+            <p data-i18n="faq.a3">完全支持。BareTurn 采用本地 ECDSA P-256 离线签名许可证书（`.bareturnlic`）。在隔离内网的 Core 控制台导出 `.req` 请求码，用任意外网设备在许可门户兑换 `.bareturnlic` 后拷回内网导入即可，此后终身无需连接外网。</p>
+          </details>
+          <details>
+            <summary data-i18n="faq.q4">Core 服务器主板故障或迁移到新服务器怎么办？</summary>
+            <p data-i18n="faq.a4">BareTurn 采用 3 项稳定硬件因子的 2/3 容错匹配（不绑定网卡 MAC 或数据盘序列号），常规维护不会触发失效。若整机迁移或用 `.bareturnconfig` 恢复到全新硬件，系统会自动开启 30 天迁移宽限期，备份与恢复均不中断，期间可在门户自助完成换绑（Rehost）。</p>
+          </details>
+          <details>
+            <summary data-i18n="faq.q5">退役或停保的旧计算机会一直占用我的席位吗？</summary>
+            <p data-i18n="faq.a5">不会。在控制台对计算机执行「停止保护」后，该计算机变为“已归档”状态并立即释放所占席位，您可以立刻把席位分配给新机器；同时旧机器的所有历史恢复点仍完整保留，随时可供挂载或恢复。</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container foot-grid">
+      <div class="foot-brand">
+        <a class="brand" href="#top">
+          <img src="assets/bareturn-mark.svg" alt="BareTurn" width="28" height="28">
+          <span><strong>BareTurn</strong><small>Rootford</small></span>
+        </a>
+        <p data-i18n="foot.desc">面向 Windows 与 Linux 的私有化整机备份、裸机恢复与防勒索灾备平台。永久许可，无订阅。</p>
+      </div>
+      <div class="foot-col">
+        <h4 data-i18n="foot.c1">产品</h4>
+        <a href="#features" data-i18n="nav.features">核心能力</a>
+        <a href="#architecture" data-i18n="nav.arch">灾备架构</a>
+        <a href="#pricing" data-i18n="nav.pricing">永久许可定价</a>
+        <a href="demo.html" target="_blank" rel="noopener noreferrer" data-i18n="nav.demo">在线控制台演示</a>
+      </div>
+      <div class="foot-col">
+        <h4 data-i18n="foot.c2">许可与服务</h4>
+        <a href="https://bareturn-licensing-portal.nykko-lin.workers.dev/" target="_blank" rel="noopener noreferrer" data-i18n="nav.portal">许可门户（Creem 收单）</a>
+        <a href="https://bareturn-licensing-portal.nykko-lin.workers.dev/#activate" target="_blank" rel="noopener noreferrer" data-i18n="foot.offline">离线兑换 .bareturnlic</a>
+        <a href="https://bareturn-licensing-portal.nykko-lin.workers.dev/#rehost" target="_blank" rel="noopener noreferrer" data-i18n="foot.rehost">自助换机迁移（Rehost）</a>
+        <a href="#faq" data-i18n="nav.faq">常见问题</a>
+      </div>
+    </div>
+    <div class="container foot-bottom">
+      <span>© 2026 Rootford · BareTurn 3.1</span>
+      <span data-i18n="foot.pay">支付由 Creem（Merchant of Record）安全处理 · 当前联调模式：Test Mode</span>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
