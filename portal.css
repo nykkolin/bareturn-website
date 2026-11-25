@@ -5,6 +5,39 @@
 .auth-tabs button { height: 36px; border: 0; border-radius: 6px; background: transparent; color: var(--muted); font: 600 14px/1 var(--font); cursor: pointer; }
 .auth-tabs button.on { background: var(--surface); color: var(--ink); box-shadow: 0 1px 2px rgba(0,0,0,.06); }
 
+.oauth-stack { display: flex; flex-direction: column; gap: 9px; margin-bottom: 18px; }
+.oauth-btn {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  width: 100%; height: 42px; padding: 0 14px; border-radius: 8px;
+  border: 1px solid var(--line-strong); background: var(--surface); color: var(--ink);
+  font: 600 14px/1 var(--font); cursor: pointer; transition: background .15s, border-color .15s, opacity .15s;
+}
+.oauth-btn:hover { background: var(--surface-2); border-color: var(--ink-2); }
+.oauth-btn:disabled { opacity: .6; cursor: not-allowed; }
+.oauth-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+.oauth-btn .oauth-tag { margin-left: auto; font-size: 11px; font-weight: 500; color: var(--muted); background: var(--bg-alt); padding: 2px 7px; border-radius: 99px; border: 1px solid var(--line); }
+
+.auth-divider { display: flex; align-items: center; gap: 12px; margin: 0 0 18px; color: var(--muted); font-size: 12.5px; }
+.auth-divider::before, .auth-divider::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+.oauth-banner {
+  padding: 10px 12px; border-radius: 8px; font-size: 13px; margin-bottom: 14px;
+  background: rgba(180, 35, 24, .08); border: 1px solid rgba(180, 35, 24, .25); color: var(--danger);
+}
+[data-theme="dark"] .oauth-banner { color: #f97066; }
+
+.sso-list { display: flex; flex-direction: column; gap: 10px; }
+.sso-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  padding: 12px 14px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface-2);
+}
+.sso-info { display: flex; align-items: center; gap: 10px; }
+.sso-info svg { width: 20px; height: 20px; flex-shrink: 0; }
+.provider-pill {
+  display: inline-flex; align-items: center; padding: 1px 7px; border-radius: 99px;
+  font-size: 11px; font-weight: 600; background: var(--bg-alt); border: 1px solid var(--line); color: var(--ink-2); margin-right: 4px;
+}
+
 .portal-main { padding: 32px 0 72px; min-height: calc(100vh - 64px); background: var(--bg-alt); }
 .page-top { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 22px; }
 .page-top h1 { margin: 0 0 4px; font-size: 26px; letter-spacing: -.02em; }

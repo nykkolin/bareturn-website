@@ -84,14 +84,22 @@
             </div>
           </div>
           <div class="panel">
-            <div class="panel-head"><h2>修改密码</h2></div>
+            <div class="panel-head"><h2 id="pw-panel-title">修改密码</h2></div>
             <div class="panel-body">
               <form id="pw-form">
-                <div class="field"><label for="pw-cur">当前密码</label><input id="pw-cur" type="password" required></div>
+                <div class="field" id="pw-cur-field"><label for="pw-cur">当前密码</label><input id="pw-cur" type="password" required></div>
                 <div class="field"><label for="pw-new">新密码</label><input id="pw-new" type="password" minlength="8" required><span class="hint">至少 8 个字符；修改后其他设备会话将自动失效。</span></div>
-                <button type="submit" class="btn primary">更新密码</button>
+                <button type="submit" class="btn primary" id="pw-submit-btn">更新密码</button>
               </form>
             </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-head"><h2>第三方登录绑定（SSO）</h2></div>
+          <div class="panel-body">
+            <p class="muted" style="margin-top:0;font-size:13.5px">将您的 Google、Microsoft 或 Apple 账号与当前 BareTurn 账户绑定后，即可一键安全登录。</p>
+            <div id="sso-list" class="sso-list"></div>
           </div>
         </div>
       </section>

@@ -68,8 +68,12 @@
     cache.users = res.users || [];
     const tb = document.getElementById('u-tbody');
     if (!cache.users.length) { tb.innerHTML = '<tr><td colspan="7" class="empty-box">没有匹配的用户。</td></tr>'; return; }
-    tb.innerHTML = cache.users.map((u) => `<tr>
-      <td><strong>${P.esc(u.name)}</strong><div class="muted" style="font-size:12px">${P.esc(u.email)}${u.company ? ' · ' + P.esc(u.company) : ''}</div></td>
+    tb.innerHTML = cache.users.map((u) => {
+      const provHtml = (u.providers || []).length
+        ? `<div style="margin-top:4px">${u.providers.map((p) => `<span class="provider-pill">${P.esc(p)}</span>`).join('')}</div>`
+        : '';
+      return `<tr>
+      <td><strong>${P.esc(u.name)}</strong><div class="muted" style="font-size:12px">${P.esc(u.email)}${u.company ? ' · ' + P.esc(u.company) : ''}</div>${provHtml}</td>
       <td>${u.role === 'admin' ? '<span class="badge ok">管理员</span>' : '<span class="badge muted">用户</span>'}</td>
       <td>${u.disabled ? '<span class="badge err">已停用</span>' : '<span class="badge ok">正常</span>'}</td>
       <td>${u.orderCount} 单 / ${u.licenseCount} 许可</td>
@@ -80,7 +84,8 @@
         <button class="btn xs" data-u-edit="${P.esc(u.id)}">编辑</button>
         <button class="btn xs primary" data-u-grant="${P.esc(u.id)}">发许可</button>
       </div></td>
-    </tr>`).join('');
+    </tr>`;
+    }).join('');
   }
 
   async function loadLicenses() {
@@ -164,6 +169,7 @@
             <div><dt>公司</dt><dd>${P.esc(u.company || '—')}</dd></div>
             <div><dt>角色 / 状态</dt><dd>${P.esc(u.role)} · ${u.disabled ? '已停用' : '正常'}</dd></div>
             <div><dt>活跃会话数</dt><dd>${d.activeSessions}</dd></div>
+            <div style="grid-column:1/-1"><dt>已绑定第三方登录</dt><dd>${(u.identities || []).length ? u.identities.map((i) => `<span class="provider-pill">${P.esc(i.provider)}${i.email ? ' (' + P.esc(i.email) + ')' : ''}</span>`).join('') : '仅邮箱密码登录'}</dd></div>
           </dl>
           <h4 style="margin:0 0 8px">名下许可（${d.licenses.length}）</h4>
           ${d.licenses.length ? d.licenses.map((l) => `<div class="lic-code-row" style="margin-bottom:6px"><span class="mono">${P.esc(l.activation_code)}</span><span>${l.server_seats}S + ${l.workstation_seats}W · ${P.statusBadge(l.status)}</span></div>`).join('') : '<p class="muted">暂无许可</p>'}

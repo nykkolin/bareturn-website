@@ -33,6 +33,39 @@
         <p class="muted" style="margin:0;font-size:13.5px">管理您的永久许可、订单记录、离线签发与换机迁移。</p>
       </div>
 
+      <div id="oauth-banner" class="oauth-banner hidden"></div>
+
+      <div class="oauth-stack" aria-label="第三方快捷登录">
+        <button type="button" class="oauth-btn" data-oauth="google">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="#4285F4" d="M23.49 12.27c0-.79-.07-1.54-.2-2.27H12v4.3h6.45a5.52 5.52 0 0 1-2.4 3.62v3h3.88c2.27-2.09 3.56-5.17 3.56-8.65z"/>
+            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.07 7.93-2.9l-3.88-3c-1.07.72-2.45 1.15-4.05 1.15-3.12 0-5.76-2.1-6.7-4.93H1.3v3.09A12 12 0 0 0 12 24z"/>
+            <path fill="#FBBC05" d="M5.3 14.32a7.2 7.2 0 0 1 0-4.64V6.59H1.3a12 12 0 0 0 0 10.82l4-3.09z"/>
+            <path fill="#EA4335" d="M12 4.75c1.76 0 3.34.6 4.58 1.8l3.44-3.44C17.95 1.19 15.24 0 12 0A12 12 0 0 0 1.3 6.59l4 3.09C6.24 6.85 8.88 4.75 12 4.75z"/>
+          </svg>
+          <span>使用 Google 账号继续</span>
+        </button>
+
+        <button type="button" class="oauth-btn" data-oauth="microsoft">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="1" y="1" width="10" height="10" fill="#F25022"/>
+            <rect x="13" y="1" width="10" height="10" fill="#7FBA00"/>
+            <rect x="1" y="13" width="10" height="10" fill="#00A4EF"/>
+            <rect x="13" y="13" width="10" height="10" fill="#FFB900"/>
+          </svg>
+          <span>使用 Microsoft 账号继续</span>
+        </button>
+
+        <button type="button" class="oauth-btn" data-oauth="apple">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path fill="currentColor" d="M16.365 1.43c0 1.14-.465 2.21-1.22 3.01-.78.83-2.05 1.47-3.19 1.38-.14-1.12.42-2.29 1.17-3.09.81-.85 2.18-1.48 3.24-1.3zm3.69 16.01c-.55 1.24-.81 1.79-1.52 2.88-.99 1.51-2.38 3.39-4.1 3.41-1.53.02-1.93-.99-4.01-.98-2.08.01-2.52 1-4.05.98-1.72-.02-3.03-1.71-4.02-3.22C-.44 16.33-.86 11.42 1.1 8.4c1.38-2.12 3.55-3.36 5.6-3.36 2.08 0 3.39 1.14 5.11 1.14 1.67 0 2.69-1.15 5.1-1.15 1.82 0 3.74.99 5.12 2.7-4.5 2.47-3.77 8.9.02 9.71z"/>
+          </svg>
+          <span>使用 Apple 账号继续</span>
+        </button>
+      </div>
+
+      <div class="auth-divider">或使用邮箱与密码</div>
+
       <div class="auth-tabs" role="tablist">
         <button type="button" class="on" data-mode="login">登录</button>
         <button type="button" data-mode="register">注册新账户</button>
@@ -64,6 +97,38 @@
       P.initTheme();
       const qp = new URLSearchParams(location.search);
       const next = qp.get('next') || '';
+      const bannerEl = document.getElementById('oauth-banner');
+
+      function showBanner(msg) {
+        bannerEl.textContent = msg;
+        bannerEl.classList.remove('hidden');
+      }
+
+      // 1. Handle OAuth callback fragment (#oauth_code=... or #oauth_error=...)
+      if (location.hash && location.hash.length > 1) {
+        const hp = new URLSearchParams(location.hash.slice(1));
+        const oauthCode = hp.get('oauth_code');
+        const oauthError = hp.get('oauth_error');
+        if (oauthCode || oauthError) {
+          history.replaceState(null, '', location.pathname + location.search);
+        }
+        if (oauthError) {
+          showBanner(oauthError);
+        } else if (oauthCode) {
+          try {
+            const data = await P.api('/api/v1/auth/oauth/exchange', {
+              method: 'POST',
+              skipClearOn401: true,
+              body: JSON.stringify({ code: oauthCode })
+            });
+            P.setSession(data.token, data.user);
+            location.href = next || (data.user.role === 'admin' ? 'admin.html' : 'account.html');
+            return;
+          } catch (err) {
+            showBanner(err.message || '第三方登录交换凭证失败，请重试。');
+          }
+        }
+      }
 
       const existing = await P.refreshUser();
       if (existing) {
@@ -71,6 +136,34 @@
         return;
       }
 
+      // 2. Discover configured OAuth providers from Worker
+      let providerState = { providers: { google: false, microsoft: false, apple: false } };
+      try {
+        providerState = await P.api('/api/v1/auth/providers', { skipClearOn401: true });
+      } catch (_) {}
+
+      const providerNames = { google: 'Google', microsoft: 'Microsoft', apple: 'Apple' };
+      document.querySelectorAll('[data-oauth]').forEach((btn) => {
+        const prov = btn.dataset.oauth;
+        const enabled = !!(providerState.providers && providerState.providers[prov]);
+        if (!enabled) {
+          const tag = document.createElement('span');
+          tag.className = 'oauth-tag';
+          tag.textContent = '待配置密钥';
+          btn.appendChild(tag);
+        }
+        btn.addEventListener('click', () => {
+          bannerEl.classList.add('hidden');
+          if (!enabled) {
+            showBanner(`${providerNames[prov]} 登录后端接口已就绪，请在 Cloudflare Worker 中配置 ${prov.toUpperCase()} Client ID / Secret（详见 OAUTH_SETUP.md）。`);
+            return;
+          }
+          const returnUrl = location.origin + location.pathname + (next ? `?next=${encodeURIComponent(next)}` : '');
+          location.href = `${P.API_BASE}/api/v1/auth/oauth/${prov}/start?return_to=${encodeURIComponent(returnUrl)}`;
+        });
+      });
+
+      // 3. Email/Password login & registration tabs
       const tabs = document.querySelectorAll('.auth-tabs button');
       const loginForm = document.getElementById('login-form');
       const regForm = document.getElementById('register-form');
