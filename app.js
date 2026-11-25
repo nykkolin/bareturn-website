@@ -120,14 +120,15 @@
     'price.t2.f2': '1 Server seat can also cover 1 Workstation seat',
     'price.t2.f3': 'Includes 1Y SMA · Optional renewal $59.80 / yr (20%)',
     'price.t2.f4': '30-day Core hardware migration grace & self-service rehost',
-    'price.qty': 'Qty',
-    'price.buyBtn': 'Buy Perpetual',
-    'calc.title': 'Perpetual Cost Estimator',
-    'calc.sub': 'Estimate your one-time perpetual purchase and optional Year 2+ maintenance renewal (20%).',
+    'price.addWs': '+ Add to Combined Order',
+    'price.addSrv': '+ Add to Combined Order',
+    'calc.title': 'Combined Perpetual Order Configurator',
+    'calc.sub': 'Combine any Server and Workstation seat counts into one single Creem checkout and receive one unified activation code.',
     'calc.srv': 'Servers ($299 each)',
     'calc.ws': 'Workstations ($49 each)',
-    'calc.total': 'One-Time Perpetual Total (incl. 1Y updates & support)',
+    'calc.total': 'One-Time Combined Total (incl. 1Y updates & support)',
     'calc.maint': 'Optional Year 2+ Maintenance Renewal (20%/yr — software keeps running without it)',
+    'calc.buy': 'Checkout Combined Bundle (Creem)',
     'calc.portal': 'Open Licensing Portal (Renewals & Offline Activation) ↗',
     'dl.kicker': 'GET STARTED',
     'dl.title': 'Deploy On-Premises in 5 Minutes',
@@ -288,50 +289,95 @@
     });
   });
 
-  // ── Perpetual cost calculator ──
+  // ── Unified Combined Perpetual Configurator & Creem Checkout ──
   const srvSlider = document.getElementById('calc-srv');
   const wsSlider = document.getElementById('calc-ws');
+  const srvNum = document.getElementById('calc-srv-num');
+  const wsNum = document.getElementById('calc-ws-num');
+  const checkoutBtn = document.getElementById('btn-bundle-checkout');
+  const statusEl = document.getElementById('checkout-status');
+
+  function setSeats(s, w) {
+    const cs = Math.max(0, Math.min(500, Math.trunc(Number(s) || 0)));
+    const cw = Math.max(0, Math.min(500, Math.trunc(Number(w) || 0)));
+    srvNum.value = cs;
+    wsNum.value = cw;
+    srvSlider.value = Math.min(50, cs);
+    wsSlider.value = Math.min(200, cw);
+    updateCalc();
+  }
+
   function updateCalc() {
-    const s = Number(srvSlider.value);
-    const w = Number(wsSlider.value);
-    const total = s * 299 + w * 49;
+    const s = Math.max(0, Math.min(500, Math.trunc(Number(srvNum.value) || 0)));
+    const w = Math.max(0, Math.min(500, Math.trunc(Number(wsNum.value) || 0)));
+    const sCost = s * 299;
+    const wCost = w * 49;
+    const total = sCost + wCost;
     const maint = total * 0.2;
-    document.getElementById('calc-srv-val').textContent = lang === 'en' ? `${s}` : `${s} 台`;
-    document.getElementById('calc-ws-val').textContent = lang === 'en' ? `${w}` : `${w} 台`;
+    document.getElementById('bd-srv').textContent = `${s} × $299 = $${sCost.toLocaleString('en-US')}`;
+    document.getElementById('bd-ws').textContent = `${w} × $49 = $${wCost.toLocaleString('en-US')}`;
     document.getElementById('calc-total').textContent = `$${total.toLocaleString('en-US')}`;
     document.getElementById('calc-maint').textContent = `$${maint.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}${lang === 'en' ? ' / yr' : ' / 年'}`;
+    checkoutBtn.disabled = s + w < 1;
   }
-  srvSlider.addEventListener('input', updateCalc);
-  wsSlider.addEventListener('input', updateCalc);
 
-  // ── Direct Creem Checkout via BareTurn Cloudflare Worker Portal ──
-  const statusEl = document.getElementById('checkout-status');
-  document.querySelectorAll('[data-buy]').forEach((btn) => {
-    btn.addEventListener('click', async () => {
-      const sku = btn.dataset.buy;
-      const qtyInput = document.getElementById(btn.dataset.qtyInput);
-      const units = Math.max(1, Math.min(500, parseInt(qtyInput?.value || '1', 10) || 1));
-      const origText = btn.textContent;
-      btn.disabled = true;
-      btn.textContent = lang === 'en' ? 'Connecting Creem…' : '正在创建结账…';
-      statusEl.className = 'checkout-status';
-      statusEl.textContent = lang === 'en' ? 'Creating secure Creem one-time checkout session…' : '正在连接 BareTurn 许可门户与 Creem 结账页…';
-      try {
-        const res = await fetch(`${PORTAL_URL}/api/v1/checkout`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ sku, units })
-        });
-        const data = await res.json();
-        if (!res.ok || !data.checkoutUrl) throw new Error(data.error || 'Checkout creation failed');
-        window.location.href = data.checkoutUrl;
-      } catch (err) {
-        statusEl.className = 'checkout-status err';
-        statusEl.textContent = (lang === 'en' ? 'Could not start checkout: ' : '无法创建结账会话：') + err.message;
-        btn.disabled = false;
-        btn.textContent = origText;
-      }
+  srvSlider.addEventListener('input', () => setSeats(srvSlider.value, wsNum.value));
+  wsSlider.addEventListener('input', () => setSeats(srvNum.value, wsSlider.value));
+  srvNum.addEventListener('input', () => setSeats(srvNum.value, wsNum.value));
+  wsNum.addEventListener('input', () => setSeats(srvNum.value, wsNum.value));
+
+  document.querySelectorAll('[data-step]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const [which, delta] = btn.dataset.step.split(',');
+      const s = Number(srvNum.value || 0) + (which === 'srv' ? Number(delta) : 0);
+      const w = Number(wsNum.value || 0) + (which === 'ws' ? Number(delta) : 0);
+      setSeats(s, w);
     });
+  });
+
+  document.querySelectorAll('[data-preset]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const [s, w] = btn.dataset.preset.split(',');
+      setSeats(s, w);
+    });
+  });
+
+  document.querySelectorAll('[data-add-seat]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const [which, delta] = btn.dataset.addSeat.split(',');
+      const s = Number(srvNum.value || 0) + (which === 'srv' ? Number(delta) : 0);
+      const w = Number(wsNum.value || 0) + (which === 'ws' ? Number(delta) : 0);
+      setSeats(s, w);
+      document.getElementById('bundle-builder')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  });
+
+  checkoutBtn.addEventListener('click', async () => {
+    const serverSeats = Math.max(0, Math.min(500, Math.trunc(Number(srvNum.value) || 0)));
+    const workstationSeats = Math.max(0, Math.min(500, Math.trunc(Number(wsNum.value) || 0)));
+    if (serverSeats + workstationSeats < 1) return;
+    const origText = checkoutBtn.textContent;
+    checkoutBtn.disabled = true;
+    checkoutBtn.textContent = lang === 'en' ? 'Connecting Creem…' : '正在创建合并结账…';
+    statusEl.className = 'checkout-status';
+    statusEl.textContent = lang === 'en'
+      ? `Creating one-time Creem checkout for ${serverSeats} Server(s) + ${workstationSeats} Workstation(s)…`
+      : `正在为 ${serverSeats} 台 Server + ${workstationSeats} 台 Workstation 创建一次性合并结账…`;
+    try {
+      const res = await fetch(`${PORTAL_URL}/api/v1/checkout`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'purchase', serverSeats, workstationSeats })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.checkoutUrl) throw new Error(data.error || 'Checkout creation failed');
+      window.location.href = data.checkoutUrl;
+    } catch (err) {
+      statusEl.className = 'checkout-status err';
+      statusEl.textContent = (lang === 'en' ? 'Could not start checkout: ' : '无法创建结账会话：') + err.message;
+      checkoutBtn.disabled = false;
+      checkoutBtn.textContent = origText;
+    }
   });
 
   applyLang(lang);

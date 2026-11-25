@@ -252,6 +252,22 @@ code {
 .sr-top { display: flex; justify-content: space-between; font-size: 13.5px; margin-bottom: 6px; }
 input[type="range"] { width: 100%; accent-color: var(--brand); cursor: pointer; }
 .calc-right { background: var(--surface-2); border: 1px solid var(--line); border-radius: 12px; padding: 20px; }
+.preset-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+.preset-chip {
+  border: 1px solid var(--line); background: var(--surface-2); color: var(--ink-2);
+  padding: 5px 11px; border-radius: 99px; font-size: 12px; font-weight: 600; cursor: pointer;
+}
+.preset-chip:hover { border-color: var(--brand); color: var(--brand); }
+.mini-stepper { display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 7px; overflow: hidden; background: var(--surface); }
+.mini-stepper button { width: 28px; height: 28px; border: 0; background: transparent; color: var(--ink); font-size: 15px; cursor: pointer; }
+.mini-stepper button:hover { background: var(--brand-tint); color: var(--brand); }
+.mini-stepper input {
+  width: 50px; height: 28px; border: 0; border-left: 1px solid var(--line); border-right: 1px solid var(--line);
+  background: var(--surface); color: var(--ink); text-align: center; font-size: 13.5px; font-weight: 700;
+}
+.breakdown { padding-bottom: 12px; margin-bottom: 12px; border-bottom: 1px solid var(--line); display: flex; flex-direction: column; gap: 6px; }
+.bd-row { display: flex; justify-content: space-between; font-size: 13.5px; color: var(--muted); }
+.bd-row b { color: var(--ink); font-family: ui-monospace, Menlo, monospace; font-size: 13px; }
 .calc-stat { margin-bottom: 14px; }
 .calc-stat small { display: block; font-size: 12.5px; color: var(--muted); }
 .calc-stat strong { font-size: 32px; color: var(--brand); letter-spacing: -0.02em; }

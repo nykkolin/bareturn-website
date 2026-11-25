@@ -301,8 +301,7 @@
               <li data-i18n="price.t1.f4">不限存储容量，支持在线/离线 `.bareturnlic` 激活</li>
             </ul>
             <div class="buy-inline">
-              <label class="qty-wrap"><span data-i18n="price.qty">数量</span><input type="number" id="qty-ws" min="1" max="500" value="5"></label>
-              <button class="btn primary" type="button" data-buy="BT_WS_PERP_1Y" data-qty-input="qty-ws" data-i18n="price.buyBtn">立即买断</button>
+              <button class="btn full" type="button" data-add-seat="ws,1" data-i18n="price.addWs">+ 添加到下方合并清单</button>
             </div>
           </div>
 
@@ -322,39 +321,63 @@
               <li data-i18n="price.t2.f4">含 30 天 Core 硬件灾备迁移宽限与自助换绑</li>
             </ul>
             <div class="buy-inline">
-              <label class="qty-wrap"><span data-i18n="price.qty">数量</span><input type="number" id="qty-srv" min="1" max="500" value="1"></label>
-              <button class="btn primary" type="button" data-buy="BT_SRV_PERP_1Y" data-qty-input="qty-srv" data-i18n="price.buyBtn">立即买断</button>
+              <button class="btn primary full" type="button" data-add-seat="srv,1" data-i18n="price.addSrv">+ 添加到下方合并清单</button>
             </div>
           </div>
         </div>
 
-        <!-- Calculator & Maintenance Bar -->
-        <div class="calc-panel">
+        <!-- Unified Combined Checkout Configurator -->
+        <div class="calc-panel" id="bundle-builder">
           <div class="calc-left">
-            <h3 data-i18n="calc.title">永久许可成本测算器</h3>
-            <p class="muted" data-i18n="calc.sub">拖动滑块估算贵司一次买断总价，以及第 2 年起完全可选的维护更新成本（20%）。</p>
+            <h3 data-i18n="calc.title">合并选购配置器（一次下单，统一发码）</h3>
+            <p class="muted" data-i18n="calc.sub">同时设定 Server 与 Workstation 席位数量，一次性通过 Creem 合并结账，支付后获得 1 个激活码覆盖全部所购席位。</p>
+            <div class="preset-row">
+              <button type="button" class="preset-chip" data-preset="1,5">1 Server + 5 WS ($544)</button>
+              <button type="button" class="preset-chip" data-preset="2,10">2 Server + 10 WS ($1,088)</button>
+              <button type="button" class="preset-chip" data-preset="0,5">5 WS ($245)</button>
+              <button type="button" class="preset-chip" data-preset="3,0">3 Server ($897)</button>
+            </div>
             <div class="sliders">
               <div class="slider-row">
-                <div class="sr-top"><label for="calc-srv" data-i18n="calc.srv">服务器（Server · $299）</label><strong id="calc-srv-val">2 台</strong></div>
-                <input id="calc-srv" type="range" min="0" max="50" value="2">
+                <div class="sr-top">
+                  <label for="calc-srv" data-i18n="calc.srv">服务器席位（Server · $299 / 台）</label>
+                  <div class="mini-stepper">
+                    <button type="button" data-step="srv,-1">−</button>
+                    <input id="calc-srv-num" type="number" min="0" max="500" value="1" aria-label="Server seats">
+                    <button type="button" data-step="srv,1">+</button>
+                  </div>
+                </div>
+                <input id="calc-srv" type="range" min="0" max="50" value="1">
               </div>
               <div class="slider-row">
-                <div class="sr-top"><label for="calc-ws" data-i18n="calc.ws">工作站（Workstation · $49）</label><strong id="calc-ws-val">10 台</strong></div>
-                <input id="calc-ws" type="range" min="0" max="200" value="10">
+                <div class="sr-top">
+                  <label for="calc-ws" data-i18n="calc.ws">工作站席位（Workstation · $49 / 台）</label>
+                  <div class="mini-stepper">
+                    <button type="button" data-step="ws,-1">−</button>
+                    <input id="calc-ws-num" type="number" min="0" max="500" value="5" aria-label="Workstation seats">
+                    <button type="button" data-step="ws,1">+</button>
+                  </div>
+                </div>
+                <input id="calc-ws" type="range" min="0" max="200" value="5">
               </div>
             </div>
           </div>
           <div class="calc-right">
+            <div class="breakdown">
+              <div class="bd-row"><span>Server</span><b id="bd-srv">1 × $299 = $299</b></div>
+              <div class="bd-row"><span>Workstation</span><b id="bd-ws">5 × $49 = $245</b></div>
+            </div>
             <div class="calc-stat">
               <small data-i18n="calc.total">一次性买断总额（含首年更新与支持）</small>
-              <strong id="calc-total">$1,088</strong>
+              <strong id="calc-total">$544</strong>
             </div>
             <div class="calc-stat sub-stat">
               <small data-i18n="calc.maint">第 2 年起可选维护续期（20%/年，不续仍永久运行）</small>
-              <strong id="calc-maint">$217.60 / 年</strong>
+              <strong id="calc-maint">$108.80 / 年</strong>
             </div>
             <div class="calc-actions">
-              <a class="btn sm" href="https://bareturn-licensing-portal.nykko-lin.workers.dev/" target="_blank" rel="noopener noreferrer" data-i18n="calc.portal">前往许可门户（含续购维护与离线兑换）↗</a>
+              <button type="button" class="btn primary lg full" id="btn-bundle-checkout" data-i18n="calc.buy">一次合并买断（Creem 结账）</button>
+              <a class="btn sm full" style="margin-top:8px" href="https://bareturn-licensing-portal.nykko-lin.workers.dev/" target="_blank" rel="noopener noreferrer" data-i18n="calc.portal">前往许可门户（维护续期 / 离线兑换）↗</a>
             </div>
           </div>
         </div>
