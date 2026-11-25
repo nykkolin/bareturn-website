@@ -66,7 +66,7 @@
           </div>
           <ul class="hero-facts">
             <li><svg class="ico"><use href="#i-check"/></svg><span data-i18n="hero.f1">试用无需注册，含 5 台工作站和 1 台服务器</span></li>
-            <li><svg class="ico"><use href="#i-check"/></svg><span data-i18n="hero.f2">维护期结束后，软件继续正常备份和恢复</span></li>
+            <li><svg class="ico"><use href="#i-check"/></svg><span data-i18n="hero.f2">永久许可，终身免费更新，无年度续订费</span></li>
             <li><svg class="ico"><use href="#i-check"/></svg><span data-i18n="hero.f3">无论许可状态如何，已有备份始终可以恢复</span></li>
           </ul>
         </div>
@@ -276,8 +276,8 @@
     <section class="section alt" id="pricing">
       <div class="container">
         <div class="section-head center">
-          <h2 data-i18n="price.title">永久许可，按计算机计价</h2>
-          <p data-i18n="price.sub">一次购买，永久使用。首年包含版本更新与技术支持，之后可按购买价的 20% 每年续订；不续订也可以继续使用当前版本。</p>
+          <h2 data-i18n="price.title">永久许可，终身免费更新</h2>
+          <p data-i18n="price.sub">一次购买，永久使用并终身免费获取版本更新。无订阅、无年度维护续订费，按受保护计算机数量透明计价。</p>
         </div>
 
         <div class="pricing-grid">
@@ -305,9 +305,9 @@
               <p class="pc-desc" data-i18n="price.t1.desc">适用于运行 Windows 10 / 11 的办公电脑、财务工作站和工控机。</p>
             </div>
             <ul class="pc-list">
-              <li data-i18n="price.t1.f1">永久使用所购版本</li>
-              <li data-i18n="price.t1.f2">首年版本更新与技术支持</li>
-              <li data-i18n="price.t1.f3">之后可选续订：$9.80 / 年</li>
+              <li data-i18n="price.t1.f1">永久使用，绝不停服</li>
+              <li data-i18n="price.t1.f2">终身免费更新（Lifetime Updates）</li>
+              <li data-i18n="price.t1.f3">无订阅、无任何后续续订费用</li>
               <li data-i18n="price.t1.f4">支持在线激活或离线激活</li>
             </ul>
             <div class="buy-inline"><button class="btn full" type="button" data-add-seat="ws,1" data-i18n="price.addWs">加入订单</button></div>
@@ -322,9 +322,9 @@
               <p class="pc-desc" data-i18n="price.t2.desc">适用于物理或虚拟的 Windows Server 与 Linux 服务器，也可用于保护工作站。</p>
             </div>
             <ul class="pc-list">
-              <li data-i18n="price.t2.f1">永久使用所购版本</li>
-              <li data-i18n="price.t2.f2">首年版本更新与技术支持</li>
-              <li data-i18n="price.t2.f3">之后可选续订：$59.80 / 年</li>
+              <li data-i18n="price.t2.f1">永久使用，绝不停服</li>
+              <li data-i18n="price.t2.f2">终身免费更新（Lifetime Updates）</li>
+              <li data-i18n="price.t2.f3">无订阅、无任何后续续订费用</li>
               <li data-i18n="price.t2.f4">更换 Core 硬件时有 30 天迁移宽限期，可自助换绑</li>
             </ul>
             <div class="buy-inline"><button class="btn primary full" type="button" data-add-seat="srv,1" data-i18n="price.addSrv">加入订单</button></div>
@@ -376,16 +376,16 @@
               <div class="bd-row"><span>Workstation</span><b id="bd-ws">5 × $49 = $245</b></div>
             </div>
             <div class="calc-stat">
-              <small data-i18n="calc.total">一次性总价（含首年更新与支持）</small>
+              <small data-i18n="calc.total">一次性总价（含终身免费更新）</small>
               <strong id="calc-total">$544</strong>
             </div>
             <div class="calc-stat sub-stat">
-              <small data-i18n="calc.maint">第二年起可选维护续订</small>
-              <strong id="calc-maint">$108.80 / 年</strong>
+              <small data-i18n="calc.maint">后续续订与升级费用</small>
+              <strong id="calc-maint" data-i18n="calc.maintVal">$0 · 终身免费更新</strong>
             </div>
             <div class="calc-actions">
               <button type="button" class="btn primary lg full" id="btn-bundle-checkout" data-i18n="calc.buy">前往结账</button>
-              <a class="btn sm ghost full" href="https://bareturn-licensing-portal.nykko-lin.workers.dev/" target="_blank" rel="noopener" data-i18n="calc.portal">已有许可？续订或离线激活</a>
+              <a class="btn sm ghost full" href="https://bareturn-licensing-portal.nykko-lin.workers.dev/" target="_blank" rel="noopener" data-i18n="calc.portal">已有许可？离线激活或换绑</a>
               <p class="calc-note" id="calc-note"></p>
             </div>
           </div>
@@ -438,8 +438,8 @@
         </div>
         <div class="faq-list">
           <details open>
-            <summary data-i18n="faq.q1">维护期到期后，软件还能继续备份吗？</summary>
-            <p data-i18n="faq.a1">可以。许可是永久的：首年维护期结束后，已安装的版本会继续正常执行备份和恢复。只有在需要升级到维护期之后发布的版本，或需要技术支持时，才需要按购买价的 20% 续订一年。</p>
+            <summary data-i18n="faq.q1">终身免费更新（Lifetime Updates）包含什么？以后有续费吗？</summary>
+            <p data-i18n="faq.a1">没有任何年度续订或版本升级费。一次购买后，您永久拥有软件使用权，并可终身免费获取 BareTurn 后续所有版本更新与系统适配补丁（包含基础邮件与文档支持）。如需大型企业专属 7×24 应急响应 SLA，可另行签订支持协议。</p>
           </details>
           <details>
             <summary data-i18n="faq.q2">试用到期后，已经备份的数据还能恢复吗？</summary>

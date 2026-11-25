@@ -7590,7 +7590,6 @@ ul.plain li { margin: 4px 0; line-height: 1.5; }
     const [pillCls, stateLabel] = LIC_STATES[lic.state] || ['off', lic.state];
     const seats = lic.seats || { workstationTotal: 0, workstationUsed: 0, serverTotal: 0, serverUsed: 0, serverBorrowedForWorkstations: 0, assignments: [] };
     const portalBuy = `${lic.portalUrl || 'https://bareturn-licensing-portal.nykko-lin.workers.dev'}/?coreId=${encodeURIComponent(lic.coreId)}&ws=${seats.workstationTotal}&srv=${seats.serverTotal}`;
-    const portalRenew = `${lic.portalUrl || 'https://bareturn-licensing-portal.nykko-lin.workers.dev'}/?action=renew&coreId=${encodeURIComponent(lic.coreId)}&ws=${seats.workstationTotal}&srv=${seats.serverTotal}`;
     const admin = can('admin');
     return h`<div class="stack">
       ${lic.banner ? h`<div class="${'callout ' + (lic.banner.severity === 'err' ? 'err' : 'warn')}" style="margin-top:0">${icon(lic.banner.severity === 'err' ? 'error' : 'warn')}<div><strong>${lic.banner.title}</strong><div>${lic.banner.message}</div></div></div>` : ''}
@@ -7598,19 +7597,19 @@ ul.plain li { margin: 4px 0; line-height: 1.5; }
       <div class="grid two">
         <section class="panel"><div class="panel-head">${icon('key')}<h2>许可状态</h2><span class="${'pill end ' + pillCls}">${stateLabel}</span></div><div class="panel-body">
           <dl class="kv">
-            <dt>授权类型</dt><dd>${lic.isPerpetual ? '永久许可（非订阅，买断版本永久运行）' : '30 天全功能评估试用'}</dd>
+            <dt>授权类型</dt><dd>${lic.isPerpetual ? '永久许可 · 终身免费更新（Lifetime Updates，无续费）' : '30 天全功能评估试用'}</dd>
             <dt>被授权方</dt><dd>${lic.customerName || '—'}</dd>
             ${lic.isTrial ? h`<dt>试用剩余</dt><dd>${lic.trialDaysRemaining ?? 0} 天${lic.trialEndsAt ? `（至 ${dateTime(lic.trialEndsAt)}）` : ''}</dd>` : ''}
-            ${lic.isPerpetual ? h`<dt>版本更新与支持（SMA）</dt><dd>${lic.maintenanceUntil || '—'} ${lic.maintenanceActive ? h`<span class="pill ok">维护期内（剩余 ${lic.maintenanceDaysRemaining} 天）</span>` : h`<span class="pill off">维护已到期 · 当前版本永久运行</span>`}</dd>` : ''}
+            ${lic.isPerpetual ? h`<dt>版本更新</dt><dd>${lic.lifetimeUpdates || !lic.maintenanceUntil ? h`<span class="pill ok">终身免费更新（Lifetime Updates）</span>` : h`${lic.maintenanceUntil} ${lic.maintenanceActive ? h`<span class="pill ok">维护期内</span>` : h`<span class="pill off">当前版本永久运行</span>`}`}</dd>` : ''}
             <dt>Core 标识</dt><dd class="mono small">${lic.coreId}</dd>
             <dt>软件构建日期</dt><dd class="mono small">${lic.productVersion}（${lic.buildDateUtc}）</dd>
           </dl>
-          <p class="small muted" style="margin:12px 0 0">恢复保障：无论试用或维护状态如何，历史恢复点的裸机恢复、分区恢复、挂载与文件恢复始终可用。</p>
+          <p class="small muted" style="margin:12px 0 0">恢复保障：无论试用或授权状态如何，历史恢复点的裸机恢复、分区恢复、挂载与文件恢复始终可用。</p>
           ${admin ? h`<div class="lic-actions">
             <button type="button" class="btn primary" data-action="activateLicense">${icon('key')}输入激活码</button>
             <button type="button" class="btn" data-action="importLicense">${icon('plus')}导入离线许可</button>
             <button type="button" class="btn" data-action="exportRequestCode">${icon('download')}导出请求码</button>
-            <a class="btn" href="${lic.isPerpetual && !lic.maintenanceActive ? portalRenew : portalBuy}" target="_blank" rel="noopener noreferrer">${lic.isPerpetual && !lic.maintenanceActive ? '订购维护续期' : '购买 / 增购席位'}</a>
+            <a class="btn" href="${portalBuy}" target="_blank" rel="noopener noreferrer">购买 / 增购席位</a>
           </div>` : ''}
         </div></section>
         <section class="panel"><div class="panel-head">${icon('machines')}<h2>席位配额</h2><span class="sub">服务器席位可向下兼容保护工作站；已归档计算机不占席位</span></div><div class="panel-body">
@@ -7630,7 +7629,7 @@ ul.plain li { margin: 4px 0; line-height: 1.5; }
             <td>${x.type === 'Perpetual' ? '永久许可' : '试用延期'}</td>
             <td><strong>${x.customerName}</strong>${x.orderRef ? h`<div class="small muted mono">${x.orderRef}</div>` : ''}</td>
             <td>${x.serverSeats} 服务器 · ${x.workstationSeats} 工作站</td>
-            <td class="mono small">${x.type === 'Perpetual' ? (x.maintenanceUntil || '—') : (x.expiresAt ? dateTime(x.expiresAt) : '—')}</td>
+            <td class="mono small">${x.type === 'Perpetual' ? (x.lifetimeUpdates || !x.maintenanceUntil ? '终身免费更新' : x.maintenanceUntil) : (x.expiresAt ? dateTime(x.expiresAt) : '—')}</td>
             <td>${x.hardwareMatched ? h`<span class="pill ok">匹配</span>` : h`<span class="pill warn">硬件已变更</span>`}</td>
             <td class="small muted">${dateTime(x.installedAt)}</td></tr>`)}
         </tbody></table>` : h`<div class="empty small">尚未导入任何许可文件，当前运行于开箱即用 30 天全功能试用（5 工作站 + 1 服务器）。</div>`}
@@ -7685,7 +7684,7 @@ ul.plain li { margin: 4px 0; line-height: 1.5; }
         previewed = p;
         prevBox.innerHTML = String(h`<div class="${'callout ' + (p.coreMatches && p.maintenanceCoversBuild ? 'info' : 'warn')}">
           <div><strong>${p.customerName}</strong>（${p.type === 'Perpetual' ? '永久许可' : '试用延期'} · ${p.serverSeats} 服务器 + ${p.workstationSeats} 工作站）
-          <div class="small">维护截止：${p.maintenanceUntil || '—'} · Core 匹配：${p.coreMatches ? '是' : '否（CoreId 不一致）'} · 硬件匹配：${p.hardwareMatched ? '是' : '变更（导入后进入 30 天迁移宽限）'}</div></div></div>`);
+          <div class="small">版本更新：${p.lifetimeUpdates || !p.maintenanceUntil ? '终身免费更新' : p.maintenanceUntil} · Core 匹配：${p.coreMatches ? '是' : '否（CoreId 不一致）'} · 硬件匹配：${p.hardwareMatched ? '是' : '变更（导入后进入 30 天迁移宽限）'}</div></div></div>`);
       } catch (err) { prevBox.innerHTML = ''; R.toast(err.message, 'err'); }
     });
     const btn = m.el.querySelector('[data-save]');
