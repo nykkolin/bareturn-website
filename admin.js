@@ -4,7 +4,7 @@
   P.initTheme();
 
   let me = null;
-  let cache = { users: [], licenses: [], orders: [], logs: [] };
+  let cache = { users: [], licenses: [], orders: [], trials: [], logs: [] };
   let activeTab = 'users';
 
   document.getElementById('btn-logout').onclick = () => P.logout('login.html');
@@ -14,7 +14,7 @@
     btn.addEventListener('click', () => {
       activeTab = btn.dataset.tab;
       document.querySelectorAll('.portal-tabs button').forEach((b) => b.classList.toggle('on', b === btn));
-      ['users', 'licenses', 'orders', 'audit'].forEach((t) => {
+      ['users', 'licenses', 'orders', 'trials', 'audit'].forEach((t) => {
         document.getElementById('tab-' + t).classList.toggle('hidden', t !== activeTab);
       });
     });
@@ -34,11 +34,12 @@
 
   async function loadAll() {
     try {
-      const [ov, u, l, o, a] = await Promise.all([
+      const [ov, u, l, o, tr, a] = await Promise.all([
         P.api('/api/v1/admin/overview'),
         loadUsers(),
         loadLicenses(),
         loadOrders(),
+        loadTrials().catch(() => null),
         P.api('/api/v1/admin/audit?limit=100')
       ]);
       renderOverview(ov);
@@ -132,6 +133,26 @@
     </tr>`).join('');
   }
 
+  async function loadTrials() {
+    const tb = document.getElementById('t-tbody');
+    if (!tb) return;
+    try {
+      const q = new URLSearchParams({ q: document.getElementById('t-q').value.trim() });
+      const res = await P.api('/api/v1/admin/trials?' + q.toString());
+      cache.trials = res.trials || [];
+      if (!cache.trials.length) { tb.innerHTML = '<tr><td colspan="5" class="empty-box">暂无试用申请记录。</td></tr>'; return; }
+      tb.innerHTML = cache.trials.map((r) => `<tr>
+        <td style="font-size:12px;white-space:nowrap">${P.esc(P.fmtDate(r.created_at))}</td>
+        <td><strong>${P.esc(r.company || '—')}</strong><div class="muted" style="font-size:12px">${P.esc(r.contact_name || '未填联系人')}</div></td>
+        <td class="mono">${P.esc(r.phone)}</td>
+        <td>${P.esc(r.email)}</td>
+        <td style="font-size:12.5px;max-width:340px;white-space:pre-wrap;word-break:break-word">${P.esc(r.notes || '—')}</td>
+      </tr>`).join('');
+    } catch (_) {
+      tb.innerHTML = '<tr><td colspan="5" class="empty-box">暂无法读取试用申请（需先部署 Worker 迁移 0004）。</td></tr>';
+    }
+  }
+
   function renderAudit() {
     const tb = document.getElementById('a-tbody');
     if (!cache.logs.length) { tb.innerHTML = '<tr><td colspan="5" class="empty-box">暂无管理员操作审计记录。</td></tr>'; return; }
@@ -147,6 +168,7 @@
   ['u-q', 'u-role', 'u-status'].forEach((id) => document.getElementById(id).addEventListener('input', () => loadUsers()));
   ['l-q', 'l-status'].forEach((id) => document.getElementById(id).addEventListener('input', () => loadLicenses()));
   ['o-q', 'o-status'].forEach((id) => document.getElementById(id).addEventListener('input', () => loadOrders()));
+  document.getElementById('t-q').addEventListener('input', () => loadTrials());
 
   document.addEventListener('click', async (e) => {
     const cp = e.target.closest('[data-copy]'); if (cp) { P.copyText(cp.dataset.copy); return; }

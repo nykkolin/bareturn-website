@@ -31,7 +31,7 @@
     'hero.lead': 'BareTurn protects Windows and Linux servers and workstations with whole-machine backup, bare-metal recovery, instant volume recovery, and ransomware-resistant offline copies. Every component runs on-premises, including in air-gapped networks. Perpetual licenses, paid once.',
     'hero.btnTrial': 'Start 30-day free trial',
     'hero.btnDemo': 'View console demo',
-    'hero.f1': 'No sign-up. Trial covers 5 workstations and 1 server',
+    'hero.f1': '30-day free trial covering 5 workstations and 1 server',
     'hero.f2': 'Perpetual license with Lifetime Updates and zero renewal fees',
     'hero.f3': 'Existing backups stay restorable regardless of license state',
     'mock.open': 'Open full demo',
@@ -76,8 +76,8 @@
     'sec.2.d': 'After one-time pairing, Core and agents use certificate pinning and random tokens. OS passwords are never written to disk.',
     'sec.3.t': 'Encrypted end to end',
     'sec.3.d': 'Repositories and offline drives use AES-256-GCM. Traffic is protected by TLS.',
-    'sec.4.t': 'Offline-signed licenses',
-    'sec.4.d': 'License files are signed with ECDSA P-256 and verified locally, with no call-home to the vendor.',
+    'sec.4.t': 'Audit log and console hardening',
+    'sec.4.d': 'Every configuration change, deletion, and restore is logged for audit. Built-in login rate limiting, CSRF protection, and strict directory permissions.',
     'sec.5.t': 'Access control',
     'sec.5.d': 'Three role levels and TOTP two-factor authentication that runs locally.',
     'sec.6.t': 'Portable configuration',
@@ -105,7 +105,7 @@
     'price.t0.tag': 'Evaluation',
     'price.t0.name': 'Free trial',
     'price.t0.unit': '30 days',
-    'price.t0.desc': 'Starts automatically when you install Core. No sign-up or credit card, suitable for a proof of concept in production.',
+    'price.t0.desc': 'Complete the short trial form to download the installer. Installing Core automatically activates a 30-day full-feature trial with no credit card required.',
     'price.t0.f1': 'Up to 5 workstations and 1 server',
     'price.t0.f2': 'All features included',
     'price.t0.f3': 'Existing backups stay restorable after the trial',
@@ -141,10 +141,10 @@
     'calc.buy': 'Continue to checkout',
     'calc.portal': 'Already licensed? Offline activation or rehost',
     'dl.title': 'Start your trial in three steps',
-    'dl.sub': 'Your 30-day full-feature trial starts when Core is installed. No account needed.',
+    'dl.sub': 'Submit your contact details to download the installer. Installing Core automatically activates a 30-day full-feature trial.',
     'dl.s1.n': 'Step 1',
-    'dl.s1.t': 'Install Core',
-    'dl.s1.d': 'Run the Core installer on a Windows Server or PC, then open https://&lt;server&gt;:9843/ in a browser to create the admin account.',
+    'dl.s1.t': 'Download and install Core',
+    'dl.s1.d': 'Get the installer from the <a href="trial.html">trial download page</a>, run it on Windows Server or PC, then open https://&lt;server&gt;:9843/ to create the admin account — your 30-day trial activates automatically.',
     'dl.s2.n': 'Step 2',
     'dl.s2.t': 'Deploy agents',
     'dl.s2.d': 'Run the agent installer on Windows or <code>sudo ./install.sh</code> on Linux, then confirm the certificate fingerprint in the console to pair.',
@@ -154,7 +154,7 @@
     'dl.bar.t': 'Want to see the console first?',
     'dl.bar.d': 'Open the interactive console demo in your browser. Nothing to install.',
     'dl.bar.demo': 'Open console demo',
-    'dl.bar.portal': 'Licensing portal',
+    'dl.bar.trial': 'Download 30-day trial',
     'faq.title': 'FAQ',
     'faq.sub': 'Common questions about licensing, trials, and deployment.',
     'faq.q1': 'What does Lifetime Updates include? Are there any renewal fees?',
@@ -173,9 +173,9 @@
     'foot.c1': 'Product',
     'foot.arch': 'Architecture',
     'foot.c2': 'Licensing and services',
-    'foot.portal': 'Licensing portal',
-    'foot.offline': 'Offline activation',
-    'foot.rehost': 'Move Core to new hardware',
+    'foot.trial': 'Download 30-day trial',
+    'foot.account': 'Account & license management',
+    'foot.privacy': 'Privacy policy',
     'foot.pay': 'Payments handled by Creem as Merchant of Record'
   };
 
@@ -399,7 +399,7 @@
     } catch (err) {
       statusEl.className = 'checkout-status err';
       statusEl.textContent = t('无法打开结账页：', 'Could not open checkout: ') + err.message +
-        t('。请稍后重试，或通过许可门户购买。', '. Try again shortly, or buy through the licensing portal.');
+        t('。请稍后重试，或登录账户中心后重试。', '. Please try again shortly, or sign in to your account and retry.');
       checkoutBtn.disabled = false;
       checkoutBtn.textContent = origText;
     }

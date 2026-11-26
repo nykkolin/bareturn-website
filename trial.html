@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>下载 30 天免费试用 · BareTurn</title>
+  <meta name="description" content="填写基本信息下载 BareTurn 安装包，安装 Core 后默认激活 30 天全功能试用，含 5 台工作站与 1 台服务器。">
+  <link rel="icon" type="image/svg+xml" href="assets/bareturn-mark.svg">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="portal.css">
+  <script>try{var t=localStorage.getItem('bareturn.site.theme');if(t)document.documentElement.dataset.theme=t;}catch(e){}</script>
+</head>
+<body>
+  <header class="nav-wrap">
+    <div class="container nav">
+      <a class="brand" href="index.html" aria-label="BareTurn">
+        <img src="assets/bareturn-mark.svg" alt="" width="30" height="30">
+        <strong>BareTurn</strong><span class="by">Rootford</span>
+      </a>
+      <nav class="nav-links" aria-label="Main">
+        <a href="index.html" data-i18n="nav.home">官网首页</a>
+        <a href="index.html#features" data-i18n="nav.features">产品功能</a>
+        <a href="index.html#pricing" data-i18n="nav.pricing">价格</a>
+        <a href="demo.html" target="_blank" rel="noopener" data-i18n="nav.demo">控制台演示</a>
+      </nav>
+      <div class="nav-actions">
+        <button class="icon-btn" id="lang-toggle" type="button" aria-label="Switch language">EN</button>
+        <button class="icon-btn" id="theme-toggle" type="button" aria-label="Toggle theme">◐</button>
+        <a class="btn sm ghost" id="nav-auth-btn" href="login.html" data-i18n="nav.login">登录 / 注册</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="trial-main">
+    <div class="container">
+      <!-- Step 1: Trial Registration Form -->
+      <div id="trial-form-view" class="trial-grid">
+        <section class="trial-card">
+          <div class="trial-head">
+            <h1 data-i18n="t.title">下载试用</h1>
+            <p class="trial-lead" data-i18n="t.lead">填写表单信息，免费下载安装！</p>
+            <p class="trial-sub" data-i18n="t.sub">填写联系电话和邮箱后，立即跳转至产品安装包下载页。安装 Core 后默认激活 30 天全功能试用，不限制企业邮箱。</p>
+          </div>
+
+          <form id="trial-form" class="trial-form" novalidate>
+            <div class="field">
+              <label for="t-company" data-i18n="f.company">公司名称</label>
+              <input id="t-company" name="company" type="text" autocomplete="organization" maxlength="120" placeholder="选填，例如：示例科技有限公司" data-ph-en="Optional, e.g. Acme Corp">
+            </div>
+
+            <div class="field">
+              <label for="t-contact" data-i18n="f.contact">联系人</label>
+              <input id="t-contact" name="contactName" type="text" autocomplete="name" maxlength="80" placeholder="选填，例如：张工" data-ph-en="Optional, e.g. Alex Chen">
+            </div>
+
+            <div class="field">
+              <label for="t-phone"><span data-i18n="f.phone">联系电话</span><span class="req-mark" data-i18n="f.req">(必填)*</span></label>
+              <input id="t-phone" name="phone" type="tel" autocomplete="tel" required maxlength="32" placeholder="请输入手机号码或座机号" data-ph-en="Enter phone number">
+            </div>
+
+            <div class="field">
+              <label for="t-email"><span data-i18n="f.email">邮箱</span><span class="req-mark" data-i18n="f.req">(必填)*</span></label>
+              <input id="t-email" name="email" type="email" autocomplete="email" required maxlength="160" placeholder="支持个人邮箱或企业邮箱，例如：you@example.com" data-ph-en="Personal or work email, e.g. you@example.com">
+            </div>
+
+            <div class="field">
+              <label for="t-notes" data-i18n="f.notes">需求描述</label>
+              <textarea id="t-notes" name="notes" rows="4" maxlength="1000" placeholder="选填：例如需要保护的 Windows / Linux 服务器与工作站数量、存储方式（本地盘 / NAS / S3 / 离线盘）等" data-ph-en="Optional: number of Windows/Linux machines, storage target (local, NAS, S3, offline drive), etc."></textarea>
+            </div>
+
+            <p class="trial-privacy-note" data-i18n="f.privacy">点击“提交”，即表示您同意根据<a href="privacy.html" target="_blank" rel="noopener">隐私政策</a>处理个人数据。</p>
+
+            <button type="submit" class="btn primary lg full" id="t-submit" data-i18n="f.submit">提交并前往下载</button>
+            <div class="form-err" id="t-err" role="alert"></div>
+          </form>
+        </section>
+
+        <aside class="trial-aside">
+          <h2 data-i18n="a.title">30 天全功能试用包含</h2>
+          <ul class="trial-aside-list">
+            <li data-i18n="a.1">安装 BareTurn Core 后<strong>默认自动激活 30 天试用</strong>，无需输入激活码或绑定信用卡</li>
+            <li data-i18n="a.2">包含 5 台工作站与 1 台服务器席位，支持全部备份与恢复功能</li>
+            <li data-i18n="a.3">支持 Windows / Linux 整机与裸机恢复、分区即时恢复、文件级恢复、S3 不可变副本与可引导离线盘</li>
+            <li data-i18n="a.4">可完全离线部署在隔离内网中，不向厂商服务器回传任何备份数据</li>
+            <li data-i18n="a.5">试用到期后已有备份仍可随时恢复；购买永久许可后直接导入即可转正，无需重装</li>
+          </ul>
+          <div class="trial-aside-box">
+            <strong data-i18n="a.demoT">想先在线体验控制台？</strong>
+            <span data-i18n="a.demoD">无需安装即可打开交互式演示控制台，查看真实备份、分区恢复与离线盘界面。</span>
+            <div style="margin-top:10px">
+              <a class="btn sm" href="demo.html" target="_blank" rel="noopener" data-i18n="a.demoBtn">打开控制台演示</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+
+      <!-- Step 2: Installer Download View (revealed after submission) -->
+      <div id="trial-download-view" class="hidden">
+        <div class="trial-banner">
+          <div>
+            <h2 data-i18n="d.bannerT">✓ 试用信息已提交，立即下载 BareTurn 3.1 安装包</h2>
+            <p data-i18n="d.bannerD">安装 BareTurn Core 并创建管理员账户后，系统将<strong>默认自动激活 30 天全功能试用</strong>（含 5 台工作站 + 1 台服务器，无需激活码）。</p>
+          </div>
+          <button type="button" class="btn sm" id="btn-edit-trial" data-i18n="d.edit">修改联系信息</button>
+        </div>
+
+        <div class="dl-grid">
+          <article class="dl-card featured">
+            <div class="dl-card-top">
+              <div>
+                <h3 data-i18n="d.coreT">BareTurn Core 管理服务器</h3>
+                <p data-i18n="d.coreD">Windows Server 2019–2025 或 Windows 10 / 11 (x64)。内置 Web 控制台、调度引擎与恢复介质构建器。</p>
+              </div>
+              <span class="badge ok" data-i18n="d.coreBadge">默认激活 30 天试用</span>
+            </div>
+            <div class="dl-file"><span data-file-name="core">BareTurn-core-3.1.0-win-x64-Setup.exe</span><span>Windows x64</span></div>
+            <div class="dl-card-foot">
+              <a class="btn primary" data-dl="core" href="#" download data-i18n="d.downloadCore">下载 Core 安装包</a>
+              <span class="muted" style="font-size:12.5px" data-i18n="d.step1Hint">第 1 步安装</span>
+            </div>
+          </article>
+
+          <article class="dl-card">
+            <div class="dl-card-top">
+              <div>
+                <h3 data-i18n="d.winAgentT">BareTurn Agent（Windows）</h3>
+                <p data-i18n="d.winAgentD">安装在受保护的 Windows 10 / 11 工作站及 Windows Server 2012–2025 服务器上，支持 VSS 应用一致快照与分区即时恢复。</p>
+              </div>
+              <span class="badge muted">Windows x64</span>
+            </div>
+            <div class="dl-file"><span data-file-name="winAgent">BareTurn-agent-3.1.0-win-x64-Setup.exe</span><span>Windows x64</span></div>
+            <div class="dl-card-foot">
+              <a class="btn" data-dl="winAgent" href="#" download data-i18n="d.downloadWin">下载 Windows Agent</a>
+            </div>
+          </article>
+
+          <article class="dl-card">
+            <div class="dl-card-top">
+              <div>
+                <h3 data-i18n="d.linX64T">BareTurn Agent（Linux x86-64）</h3>
+                <p data-i18n="d.linX64D">适用于 Ubuntu、Debian、RHEL、Rocky Linux、AlmaLinux（x86-64，systemd），自包含免依赖。</p>
+              </div>
+              <span class="badge muted">Linux x64</span>
+            </div>
+            <div class="dl-file"><span data-file-name="linuxX64">BareTurn-agent-3.1.0-linux-x64.tar.gz</span><span>tar.gz</span></div>
+            <div class="dl-card-foot">
+              <a class="btn" data-dl="linuxX64" href="#" download data-i18n="d.downloadLin64">下载 Linux x86-64</a>
+            </div>
+          </article>
+
+          <article class="dl-card">
+            <div class="dl-card-top">
+              <div>
+                <h3 data-i18n="d.linArmT">BareTurn Agent（Linux ARM64）</h3>
+                <p data-i18n="d.linArmD">适用于 ARM64 / aarch64 架构 Linux 服务器，支持 ext2/3/4、XFS、LVM 快照与 dm-clone 即时恢复。</p>
+              </div>
+              <span class="badge muted">Linux ARM64</span>
+            </div>
+            <div class="dl-file"><span data-file-name="linuxArm64">BareTurn-agent-3.1.0-linux-arm64.tar.gz</span><span>tar.gz</span></div>
+            <div class="dl-card-foot">
+              <a class="btn" data-dl="linuxArm64" href="#" download data-i18n="d.downloadLinArm">下载 Linux ARM64</a>
+            </div>
+          </article>
+        </div>
+
+        <section class="panel">
+          <div class="panel-head"><h2 data-i18n="d.guideT">快速部署说明</h2></div>
+          <div class="panel-body">
+            <ol style="margin:0 0 16px;padding-left:20px;color:var(--ink-2);font-size:14.5px;display:grid;gap:8px">
+              <li data-i18n="d.g1">运行 <code>BareTurn-core-3.1.0-win-x64-Setup.exe</code>，安装完成后在浏览器打开 <code>https://&lt;服务器&gt;:9843/</code> 创建管理员账户，<strong>30 天全功能试用即自动激活</strong>。</li>
+              <li data-i18n="d.g2">在受保护的 Windows 机器运行 Windows Agent 安装程序，或在 Linux 上执行下方命令：</li>
+              <li data-i18n="d.g3">在 Core 控制台“计算机 → 保护计算机”中核对证书指纹完成配对，即可创建备份计划并演练恢复。</li>
+            </ol>
+            <div class="cmd-box">
+              <code id="linux-cmd">tar xzf BareTurn-agent-3.1.0-linux-x64.tar.gz &amp;&amp; cd BareTurn-agent-* &amp;&amp; sudo ./install.sh</code>
+              <button type="button" class="btn xs" id="btn-copy-cmd" data-i18n="d.copy">复制命令</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container foot-bottom">
+      <span>© 2026 Rootford</span>
+      <span><a href="privacy.html" data-i18n="foot.privacy">隐私政策</a> · <a href="index.html" data-i18n="nav.home">官网首页</a></span>
+    </div>
+  </footer>
+
+  <script src="portal-common.js"></script>
+  <script src="trial.js"></script>
+</body>
+</html>
