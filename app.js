@@ -34,25 +34,6 @@
     'hero.f1': 'No sign-up. Trial covers 5 workstations and 1 server',
     'hero.f2': 'Perpetual license with Lifetime Updates and zero renewal fees',
     'hero.f3': 'Existing backups stay restorable regardless of license state',
-    'mock.badge': 'On-premises',
-    'mock.nav1': 'Overview',
-    'mock.nav2': 'Machines',
-    'mock.nav3': 'Recovery points',
-    'mock.nav4': 'Instant recovery',
-    'mock.nav5': 'Repositories',
-    'mock.nav6': 'Settings',
-    'mock.k1': 'Protected machines',
-    'mock.k1s': 'All within RPO',
-    'mock.k2': 'Data reduction',
-    'mock.k2s': 'Compression and dedup',
-    'mock.k3': 'Copy policy',
-    'mock.k3s': 'Immutable copy locked',
-    'mock.r1': 'Windows Server 2022, VSS app-consistent, 12 min ago',
-    'mock.r2': 'Ubuntu 24.04, LVM snapshot, 38 min ago',
-    'mock.r3': 'Instant recovery, read-write, 84% hydrated',
-    'mock.r4': 'Bootable offline drive, AES-256-GCM, ejected',
-    'mock.r4s': 'Synced',
-    'mock.foot': 'License valid, no internet required',
     'mock.open': 'Open full demo',
     'plat.label': 'Supported platforms',
     'plat.s3': 'S3-compatible storage',
@@ -227,6 +208,7 @@
     try { localStorage.setItem('bareturn.site.lang', lang); } catch (_) {}
     renderArch(currentArch);
     updateCalc();
+    if (window.BTHeroDemo) window.BTHeroDemo.setLang(lang);
     document.getElementById('calc-note').textContent = CHECKOUT_TEST_MODE
       ? t('结账目前处于测试模式，不会产生真实扣款。', 'Checkout is currently in test mode. No real charges will be made.')
       : '';

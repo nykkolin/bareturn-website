@@ -72,39 +72,77 @@
           </ul>
         </div>
 
-        <div class="console-frame" aria-label="BareTurn console preview">
+        <div class="console-frame" id="hero-demo" aria-label="BareTurn console demo">
           <div class="console-chrome">
-            <span class="lights"><i></i><i></i><i></i></span>
-            <span class="chrome-url">https://core.corp.local:9843/#/dashboard</span>
-            <span class="chrome-pill" data-i18n="mock.badge">内网部署</span>
+            <span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="chrome-url" id="demo-url">https://core.corp.local:9843/#/dashboard</span>
+            <span class="chrome-live"><i class="live-dot" aria-hidden="true"></i><span id="demo-badge">交互演示</span></span>
+            <button class="chrome-ctrl" id="demo-play-toggle" type="button" aria-label="暂停演示" aria-pressed="false" title="暂停 / 播放">
+              <svg class="ico-pause" viewBox="0 0 16 16" aria-hidden="true"><rect x="3.5" y="2.5" width="3" height="11" rx="1"/><rect x="9.5" y="2.5" width="3" height="11" rx="1"/></svg>
+              <svg class="ico-play" viewBox="0 0 16 16" aria-hidden="true"><path d="M4.2 2.8a.6.6 0 0 1 .9-.5l8.1 5.2a.6.6 0 0 1 0 1l-8.1 5.2a.6.6 0 0 1-.9-.5V2.8z"/></svg>
+            </button>
           </div>
-          <div class="console-body">
-            <div class="console-sidebar">
-              <div class="cs-brand"><img src="assets/bareturn-mark.svg" alt="" width="20" height="20">BareTurn</div>
-              <div class="cs-item on" data-i18n="mock.nav1">概览</div>
-              <div class="cs-item" data-i18n="mock.nav2">受保护计算机</div>
-              <div class="cs-item" data-i18n="mock.nav3">恢复点</div>
-              <div class="cs-item" data-i18n="mock.nav4">即时恢复</div>
-              <div class="cs-item" data-i18n="mock.nav5">存储库</div>
-              <div class="cs-item" data-i18n="mock.nav6">设置</div>
+
+          <div class="console-body" id="demo-body">
+            <aside class="console-sidebar" aria-label="Console navigation">
+              <div class="cs-brand"><img src="assets/bareturn-mark.svg" alt="" width="20" height="20"><span>BareTurn</span></div>
+              <div class="cs-nav" role="tablist" aria-label="Demo scenes">
+                <button class="cs-item on" type="button" role="tab" aria-selected="true" data-demo-scene="0">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="13" y="3" width="8" height="5" rx="1.5"/><rect x="13" y="10" width="8" height="11" rx="1.5"/><rect x="3" y="13" width="8" height="8" rx="1.5"/></svg>
+                  <span data-demo-nav="0">概览</span>
+                </button>
+                <button class="cs-item" type="button" role="tab" aria-selected="false" data-demo-scene="1">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></svg>
+                  <span data-demo-nav="1">计算机</span>
+                </button>
+                <button class="cs-item" type="button" role="tab" aria-selected="false" data-demo-scene="2">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.66 3.58 3 8 3s8-1.34 8-3V6M4 12v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg>
+                  <span data-demo-nav="2">分区恢复</span>
+                </button>
+                <button class="cs-item" type="button" role="tab" aria-selected="false" data-demo-scene="3">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5h4.8l2 2H19.5A1.5 1.5 0 0 1 21 8.5v9A1.5 1.5 0 0 1 19.5 19h-15A1.5 1.5 0 0 1 3 17.5z"/></svg>
+                  <span data-demo-nav="3">文件恢复</span>
+                </button>
+                <button class="cs-item" type="button" role="tab" aria-selected="false" data-demo-scene="4">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7c0-1.66 3.58-3 8-3s8 1.34 8 3v10c0 1.66-3.58 3-8 3s-8-1.34-8-3V7z"/><path d="M4 12c0 1.66 3.58 3 8 3s8-1.34 8-3"/></svg>
+                  <span data-demo-nav="4">存储库</span>
+                </button>
+              </div>
+              <div class="cs-foot">
+                <strong><i class="core-dot" aria-hidden="true"></i>RC-CORE-01</strong>
+                <span>Core 3.1 · :9843</span>
+              </div>
+            </aside>
+
+            <div class="console-stage">
+              <div class="stage-topbar">
+                <span class="stage-title" id="demo-stage-title">概览</span>
+                <span class="stage-run-chip" id="demo-run-chip">
+                  <span class="mini-spin" aria-hidden="true"></span>
+                  <span class="run-host">SQL-PROD-01</span>
+                  <span class="mini-bar" aria-hidden="true"><span id="demo-top-bar" style="width:48%"></span></span>
+                  <b id="demo-top-pct">48%</b>
+                </span>
+              </div>
+              <div class="stage-viewport" id="demo-viewport" aria-live="off"></div>
             </div>
-            <div class="console-main">
-              <div class="kpi-row">
-                <div class="kpi"><small data-i18n="mock.k1">受保护计算机</small><strong>12 / 12</strong><span class="ok-txt" data-i18n="mock.k1s">全部达标</span></div>
-                <div class="kpi"><small data-i18n="mock.k2">数据缩减比</small><strong>3.8×</strong><span class="muted" data-i18n="mock.k2s">压缩与去重</span></div>
-                <div class="kpi"><small data-i18n="mock.k3">副本策略</small><strong>3-2-1-1-0</strong><span class="ok-txt" data-i18n="mock.k3s">不可变副本已锁定</span></div>
-              </div>
-              <div class="mock-list">
-                <div class="mock-row"><span class="pill ok">OK</span><div class="mr-info"><b>ERP-DB01</b><small data-i18n="mock.r1">Windows Server 2022，VSS 应用一致，12 分钟前</small></div><span class="mr-stat">+148 MB</span></div>
-                <div class="mock-row"><span class="pill ok">OK</span><div class="mr-info"><b>GIT-PROD-02</b><small data-i18n="mock.r2">Ubuntu 24.04，LVM 快照，38 分钟前</small></div><span class="mr-stat">+62 MB</span></div>
-                <div class="mock-row"><span class="pill teal">LIVE</span><div class="mr-info"><b>FIN-FILE01 (D:)</b><small data-i18n="mock.r3">即时恢复中，已可读写，后台回写 84%</small></div><span class="mr-stat">280 MB/s</span></div>
-                <div class="mock-row"><span class="pill ok">OFFLINE</span><div class="mr-info"><b>USB-VAULT-A</b><small data-i18n="mock.r4">可引导离线盘，AES-256-GCM，已安全弹出</small></div><span class="mr-stat" data-i18n="mock.r4s">已同步</span></div>
-              </div>
-              <div class="console-foot">
-                <span data-i18n="mock.foot">许可有效，无需连接外网</span>
-                <a href="demo.html" target="_blank" rel="noopener" data-i18n="mock.open">打开完整演示</a>
-              </div>
+
+            <div class="demo-cursor is-hidden" id="demo-cursor" aria-hidden="true">
+              <svg class="cursor-svg" viewBox="0 0 20 20"><path d="M3.2 2.2 15.8 9.6l-5.6 1.5 2.7 5.1-2.1 1.1-2.7-5.1-4.3 3.7z"/></svg>
+              <span class="demo-ripple" id="demo-ripple"></span>
             </div>
+          </div>
+
+          <div class="console-foot">
+            <div class="demo-stepper" id="demo-stepper" role="tablist" aria-label="Demo steps">
+              <button type="button" class="step-seg on" data-demo-step="0" aria-label="概览"><span class="seg-bar"><i></i></span></button>
+              <button type="button" class="step-seg" data-demo-step="1" aria-label="计算机"><span class="seg-bar"><i></i></span></button>
+              <button type="button" class="step-seg" data-demo-step="2" aria-label="分区恢复"><span class="seg-bar"><i></i></span></button>
+              <button type="button" class="step-seg" data-demo-step="3" aria-label="文件恢复"><span class="seg-bar"><i></i></span></button>
+              <button type="button" class="step-seg" data-demo-step="4" aria-label="存储库"><span class="seg-bar"><i></i></span></button>
+            </div>
+            <span class="demo-caption" id="demo-caption">保护概览 · 14 天变化量与勒索异常检测</span>
+            <a class="demo-open" id="demo-open-link" href="demo.html#/dashboard" target="_blank" rel="noopener" data-i18n="mock.open">打开完整演示</a>
           </div>
         </div>
       </div>
@@ -498,6 +536,7 @@
   </footer>
 
   <script src="portal-common.js"></script>
+  <script src="hero-demo.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
